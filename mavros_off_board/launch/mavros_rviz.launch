@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- MAVROS posix SITL environment launch script -->
+    <!-- launches MAVROS, PX4 SITL, Gazebo environment, and spawns vehicle -->
+    <!-- vehicle pose -->
+    <arg name="x" default="0"/>
+    <arg name="y" default="0"/>
+    <arg name="z" default="0.15"/>
+    <arg name="R" default="0"/>
+    <arg name="P" default="0"/>
+    <arg name="Y" default="0"/> <!-- The URDF model is rotated to get its properly pos 3.14159 -->
+    <!-- vehicle model and world -->
+    <arg name="vehicle" default="iris"/>
+    <arg name="world" default="$(find mavros_off_board)/worlds/uni.world"/>
+    <!-- $(find mavros_off_board)/worlds/gas.world /> /home/sherlock/src/Firmware/Tools/sitl_gazeboworlds/iris.world -->
+
+    <!-- gazebo configs -->
+    <arg name="gui" default="true"/>
+    <arg name="debug" default="false"/>
+    <arg name="verbose" default="false"/>
+    <arg name="paused" default="false"/>
+    <arg name="respawn_gazebo" default="false"/>
+
+    <!-- MAVROS configs -->
+    <arg name="fcu_url" default="udp://:14540@localhost:14557"/>
+    <arg name="respawn_mavros" default="false"/>
+
+    <!-- Gazebo sim -->
+    <include file="$(find gazebo_ros)/launch/empty_world.launch">
+        <arg name="gui" value="$(arg gui)"/>
+        <arg name="world_name" value="$(arg world)"/>
+        <arg name="debug" value="$(arg debug)"/>
+        <arg name="verbose" value="$(arg verbose)"/>
+        <arg name="paused" value="$(arg paused)"/>
+        <arg name="respawn_gazebo" value="$(arg respawn_gazebo)"/>
+    </include>
+
+
+    <!-- MAVROS LAUNCHER -->
+
+    <include file="$(find mavros_off_board)/launch/px4_modify.launch">
+        <arg name="gcs_url" value=""/>
+        <arg name="fcu_url" value="$(arg fcu_url)"/>
+        <arg name="respawn_mavros" value="$(arg respawn_mavros)"/>
+    </include>
+
+    <!-- IMAGE VIEWER NODE 
+    <node name="image_view" pkg="image_view" type="image_view" respawn="false" output="screen">
+    	<remap from="image" to="/iris/camera_red_iris/image_raw" />
+   	<param name="autosize" value="true" />
+    </node> -->
+
+    <!-- Robot description -->
+    <param name="robot_description" textfile="$(find mavros_off_board)/urdf/iris_base.urdf" /> 
+
+    <!-- Robot State Publisher TF  
+    <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
+        <param name="publish_frequency" type="double" value="30.0" />
+    </node> -->
+
+    <!-- Robot Joint Publisher  
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" /> -->
+
+    <!-- Launch visualization in rviz 
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find mavros_off_board)/urdf.rviz" required="true" /> -->
+
+    <!-- Launch visualization in Gazebo with URDF spawner
+    <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-urdf -model iris -param robot_description"/> -->
+
+     <!-- gazebo model spawn -->
+     <node name="$(anon vehicle_spawn)" output="screen" pkg="gazebo_ros" type="spawn_model"
+        args="-urdf -param robot_description -model iris -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>   
+     
+
+</launch>
+
+

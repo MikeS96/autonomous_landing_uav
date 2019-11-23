@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<launch>
+
+    <!-- For video Streaming -->
+    <node name="web_video_server" pkg="web_video_server" type="web_video_server">
+	<param name="width" type="int" value="160" />
+	<param name="height" type="int" value="120" />
+	<param name="quality" type="int" value="50" />
+    </node> 
+
+ 
+    <!-- Video Capture -->
+    <node pkg="usb_cam" type="usb_cam_node" name="usb_cam">
+        <param name="video_device" value="/dev/video0"/>
+        <param name="image_width" value="320"/>
+        <param name="image_height" value="240"/>
+        <param name="pixel_format" value="yuyv"/>
+	<param name="io_method" value="mmap"/>
+        <param name="framerate" value="16"/>
+    </node>
+
+    <!-- Find object 2d package -->
+    <node pkg="find_object_2d" type="find_object_2d" name="find_object_2d" output="screen">
+        <remap from="image" to="/usb_cam/image_raw"/>
+        <param name="gui" value="false"/>
+        <param name="objects_path" value="/home/odroid/bagfiles/Templates/fullQ"/>
+    </node>
+
+    <!-- Detection nodes -->
+    <node pkg="object_detector" type="corners_detector" name="corners_detected">
+    </node>
+    <node pkg="object_detector" type="cent_calculator" name="data_calculation">
+    </node>
+    <node pkg="object_detector" type="handmade_kf" name="KF_predictor">
+    </node>
+    <node pkg="object_detector" type="rectangle_plot_bridge" name="Rectangle_Detector">
+    </node>  
+
+</launch>
