@@ -4,7 +4,7 @@
 #include "object_detector/corners.h" //Custom message where im going to publish 
 #include <QTransform> //Library to do the perspective transforms
 
-class Detections //Class Detections
+class Detections //Class Detectionss
 {
   private: //Declaration of pubs and subs
 
