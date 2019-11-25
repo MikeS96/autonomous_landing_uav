@@ -42,7 +42,6 @@ CTRL-C to quit
 
 moveBindings = {
 
-		#the commented works, but it is inverted i dont know why... so i inverted the controls
 		'w':(1,0,1,0),  # Vx, Vy, Z and Yaw_rate
 		'a':(0,-1,1,0),
 		'd':(0,1,1,0),

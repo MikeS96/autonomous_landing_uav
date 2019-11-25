@@ -228,9 +228,9 @@ add_executable(cent_calculator src/cent_calculator.cpp)
 target_link_libraries(cent_calculator ${catkin_LIBRARIES} ${QT_LIBRARIES} ${Eigen_LIBRARIES}) #libreria QT y Eigen
 add_dependencies(cent_calculator object_detector_generate_messages_cpp)
 #This scripts is a Kalman filter to do tracking of the variables mentioned
-add_executable(handmade_kf src/handmade_kf.cpp)
-target_link_libraries(handmade_kf ${catkin_LIBRARIES} ${Eigen_LIBRARIES}) #libreria QT y Eigen
-add_dependencies(handmade_kf object_detector_generate_messages_cpp)
+add_executable(kalman_filter src/kalman_filter.cpp)
+target_link_libraries(kalman_filter ${catkin_LIBRARIES} ${Eigen_LIBRARIES}) #libreria QT y Eigen
+add_dependencies(kalman_filter object_detector_generate_messages_cpp)
 #This scripts is optional and plot the result of the tracking system
 add_executable(rectangle_plot_bridge src/rectangle_plot_bridge.cpp)
 target_link_libraries(rectangle_plot_bridge ${catkin_LIBRARIES} ${OpenCV_LIBS}) #libreria QT y Eigen

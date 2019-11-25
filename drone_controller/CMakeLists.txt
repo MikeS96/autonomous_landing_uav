@@ -202,13 +202,13 @@ include_directories(
 # catkin_add_nosetests(test)
 
 #Proportional controller for the drone landing in 4 axis
-add_executable(dany_controller src/dany_controller.cpp)
-target_link_libraries(dany_controller ${catkin_LIBRARIES})
-add_dependencies(dany_controller drone_controller_generate_messages_cpp)
+add_executable(proportional src/proportional.cpp)
+target_link_libraries(proportional ${catkin_LIBRARIES})
+add_dependencies(proportional drone_controller_generate_messages_cpp)
 #Proportional controller for just traslational X and Y control
-add_executable(drone_p src/drone_p.cpp)
-target_link_libraries(drone_p ${catkin_LIBRARIES})
-add_dependencies(drone_p drone_controller_generate_messages_cpp)
+add_executable(proportional_traslation src/proportional_traslation.cpp)
+target_link_libraries(proportional_traslation ${catkin_LIBRARIES})
+add_dependencies(proportional_traslation drone_controller_generate_messages_cpp)
 #Proportional controller for rotational and traslational control
 add_executable(rotate src/rotate.cpp)
 target_link_libraries(rotate ${catkin_LIBRARIES})
