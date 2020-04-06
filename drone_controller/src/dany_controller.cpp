@@ -9,13 +9,13 @@
 #include "drone_controller/error.h"
 #include <mavros_msgs/CommandTOL.h> //Service for landing
 
-#define FACTORX  0.0015625 //0.003125, this Factor doesnt saturate the system
-#define FACTORY  0.0020833 //0.003125, this Factor doesnt saturate the system
+
+#define FACTOR  0.003125 //0.003125, this Factor doesnt saturate the system
 #define FACTORTH  0.0055 //Rotation factor
 #define FACTORZ  0.05 //Descend Factor
 
-#define MAXV  0.5 //Max Vx and Vy speed
-#define MINV -0.5 //Min Vx and Vy speed
+#define MAXV  1 //Max Vx and Vy speed
+#define MINV -1 //Min Vx and Vy speed
 #define MAXR  0.5 //Max Yaw rate
 #define MINR -0.5 //Min Yaw rate
 
@@ -45,7 +45,7 @@ class Controller //Controller class
     lastTime = ros::Time::now(); //ROS time initialization throw ros time
     imageW = 640/2;  //Image W size
     imageH = 480/2;  //Image H size
-    zini = 2.25; //Start altitude of search
+    zini = 4.0; //Start altitude of search
   }
 
   void controllerCallBack(const drone_controller::states& msg) //Callback para el subscriber
@@ -76,10 +76,10 @@ class Controller //Controller class
 
 
 	//Info Printer of the errors
-        ROS_INFO("Marker = (%f , %f) \n timeBetweenMarkers = %fs | Yaw error = %f deg | W and H error = %f px  \n", centX, centY, timeBetweenMarkers, ErTheta, ErZ);	
+        ROS_INFO("Marker = (%f , %f) \n timeBetweenMarkers = %fs | Yaw error = %fdeg | W and H error = %fdeg  \n", centX, centY, timeBetweenMarkers, ErTheta, ErZ);	
 
 	//Calculate Z descend based on W and H
-	if(ErZ<5) //If the error of W and H is less than 3 pixels
+	if(ErZ<3) //If the error of W and H is less than 3 pixels
 	{
 	    zpos =  zini -  FACTORZ; //Descend Z based on the factor 
 	}
@@ -88,7 +88,7 @@ class Controller //Controller class
 	}
 
 	//Drone service for automatic langind when it reaches an specific altitude
-	if(zpos <= 0.5){ //If the pos in z is less than this altitude
+	if(zpos <= 0.9){ //If the pos in z is less than this altitude
 	mavros_msgs::CommandTOL land_cmd; //Set all the descend parameters to Zero
         land_cmd.request.yaw = 0;
         land_cmd.request.latitude = 0;
@@ -120,10 +120,9 @@ class Controller //Controller class
 	
 
 	// Calculate Vx. Vy and Yaw rate
-        vx = -1 * ErX * FACTORX; //Ex for a multiplication factor
-        vy = ErY * FACTORY; //Ey for a multiplication factor
+        vx = -1 * ErX * FACTOR; //Ex for a multiplication factor
+        vy = ErY * FACTOR; //Ey for a multiplication factor
 	vthe = -1 * ErTheta * FACTORTH; //Etheta for a multiplication factor
-	
 
 	// Limit the Vx
         if (vx > MAXV)

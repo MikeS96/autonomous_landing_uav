@@ -10,7 +10,7 @@ PID::PID( double cmax, double cmin, double ckp, double ckd, double cki ) :max(cm
 //Destructor
 PID::~PID() {}
 
-//Calculatioon of PID values Setpoint is image_size/2
+//Calculation of PID values Setpoint is image_size/2
 double PID::calculate( double setpoint, double pv, double cdt )
 {
     
@@ -44,8 +44,8 @@ double PID::calculate( double setpoint, double pv, double cdt )
     else if( output < min ){
         output = min;}
 
-
    // return int_output;
       return output;
 }
+
 

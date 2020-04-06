@@ -10,13 +10,13 @@
 #include <mavros_msgs/CommandTOL.h> //Service for landing
 
 
-#define FACTORX  0,00234375 //0.003125, this Factor doesnt saturate the system
-#define FACTORY  0.003125 //0.003125, this Factor doesnt saturate the system
+#define FACTORX  0.0015625 //0.003125, this Factor doesnt saturate the system
+#define FACTORY  0.0020833 //0.003125, this Factor doesnt saturate the system
 #define FACTORTH  0.0055 //Rotation factor
 #define FACTORZ  0.05 //Descend Factor
 
-#define MAXV  0.75 //Max Vx and Vy speed
-#define MINV -0.75 //Min Vx and Vy speed
+#define MAXV  0.5 //Max Vx and Vy speed
+#define MINV -0.5 //Min Vx and Vy speed
 #define MAXR  0.5 //Max Yaw rate
 #define MINR -0.5 //Min Yaw rate
 
@@ -76,13 +76,8 @@ class Controller //Controller class
 	// Calculate Vx. Vy and Yaw rate
         vx = -1 * ErX * FACTORX; //Ex for a multiplication factor
         vy = ErY * FACTORY; //Ey for a multiplication factor
-	vthe = ErTheta * FACTORTH; //Etheta for a multiplication factor 
+	vthe = ErTheta * FACTORTH; //Etheta for a multiplication factor
 
-	if(ErX < 3 && ErY < 3)
-	{
-	vthe = -1 * ErTheta * FACTORTH;
-	}
-	
 	// Limit the Vx
         if (vx > MAXV)
         {
@@ -119,7 +114,7 @@ class Controller //Controller class
         pos.header.stamp = ros::Time::now(); //Time header stamp
         pos.header.frame_id = "base_link"; //"base_link" frame to compute odom
         pos.type_mask = 1987; //Mask for Vx, Vy, Z pos and Yaw rate
-        pos.position.z = 2.25;
+        pos.position.z = 2.0;
         pos.velocity.x = vx;//X(+) Drone left, X(-) Drone Right
         pos.velocity.y = vy;//Y(+) Drone Backward, X(-) Drone Forward
         pos.yaw_rate = vthe;//////Yaw(+) Drone Anti horario, Yaw(-) Drone Horario
@@ -127,7 +122,7 @@ class Controller //Controller class
 	printf("Dany Vx, Vy, Vthe  values at (%f,%f,%f) \n", vx, vy, vthe);
 	pub.publish(pos);
 
-        drone_controller::error data;
+	drone_controller::error data;
 	data.errorX = ErX;
 	data.errorY = ErY;
 	data.errorT = ErTheta;
@@ -135,6 +130,8 @@ class Controller //Controller class
 	
 	printf("Error at Vx, Vy and Theta (%f,%f,%f) \n", ErX, ErY, ErTheta);
 	pub1.publish(data);
+
+        
   }
 
 
@@ -153,3 +150,4 @@ int main(int argc, char** argv)
 
     return 0;
 }
+

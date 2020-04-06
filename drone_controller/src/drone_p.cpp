@@ -10,7 +10,7 @@
 #include <mavros_msgs/CommandTOL.h> //Service for landing
 
 
-#define FACTORX  0.00234375 //0.003125, this Factor doesnt saturate the system
+#define FACTORX  0,00234375 //0.003125, this Factor doesnt saturate the system
 #define FACTORY  0.003125 //0.003125, this Factor doesnt saturate the system
 #define FACTORTH  0.0055 //Rotation factor
 #define FACTORZ  0.05 //Descend Factor
@@ -19,6 +19,8 @@
 #define MINV -0.75 //Min Vx and Vy speed
 #define MAXR  0.5 //Max Yaw rate
 #define MINR -0.5 //Min Yaw rate
+
+
 
 
 class Controller //Controller class
@@ -44,8 +46,8 @@ class Controller //Controller class
     sub = po_nh.subscribe("/predicted_states", 10, &Controller::controllerCallBack, this); ////Predicted states subscriber (KF states)
     //land_client = po_nh.serviceClient<mavros_msgs::CommandTOL>("mavros/cmd/land"); //landing client
     lastTime = ros::Time::now(); //ROS time initialization throw ros time
-    imageW = 320/2;  //Image W size
-    imageH = 240/2;  //Image H size
+    imageW = 640/2;  //Image W size
+    imageH = 480/2;  //Image H size
     //zini = 4.0; //Start altitude of search
   }
 
@@ -62,6 +64,7 @@ class Controller //Controller class
 	// Time since last call
         double timeBetweenMarkers = (ros::Time::now() - lastTime).toSec(); //The average publish time is of 10ms
         lastTime = ros::Time::now();
+	    
 
         //Error Calculation between image and template's center
 	float ErX = imageW - centX; //Error in X of the image
@@ -105,7 +108,7 @@ class Controller //Controller class
         pos.header.stamp = ros::Time::now(); //Time header stamp
         pos.header.frame_id = "base_link"; //"base_link" frame to compute odom
         pos.type_mask = 1987; //Mask for Vx, Vy, Z pos and Yaw rate
-        pos.position.z = 2.25;
+        pos.position.z = 2.0;
         pos.velocity.x = vx;//X(+) Drone left, X(-) Drone Right
         pos.velocity.y = vy;//Y(+) Drone Backward, X(-) Drone Forward
         pos.yaw_rate = 0;//////Yaw(+) Drone Anti horario, Yaw(-) Drone Horario
@@ -113,7 +116,7 @@ class Controller //Controller class
 	printf("Dany Vx, Vy at (%f,%f) \n", vx, vy);
 	pub.publish(pos);
 
-        drone_controller::error data;
+	drone_controller::error data;
 	data.errorX = ErX;
 	data.errorY = ErY;
 	data.errorT = 0;
@@ -121,6 +124,7 @@ class Controller //Controller class
 	
 	printf("Error at Vx and Vy (%f,%f) \n", ErX, ErY);
 	pub1.publish(data);
+        
   }
 
 
@@ -139,3 +143,4 @@ int main(int argc, char** argv)
 
     return 0;
 }
+
