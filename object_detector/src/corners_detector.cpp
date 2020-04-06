@@ -4,7 +4,7 @@
 #include "object_detector/corners.h" //Custom message where im going to publish 
 #include <QTransform> //Library to do the perspective transforms
 
-class Detections //Class Detectionss
+class Detections //Class Detections
 {
   private: //Declaration of pubs and subs
 
@@ -22,7 +22,8 @@ class Detections //Class Detectionss
 
   void cornersDetectedCallback(const std_msgs::Float32MultiArrayConstPtr& msg) //Callback para el subscriber
   {
-        object_detector::corners info; //Creationg of object kind corners for info managment
+
+    object_detector::corners info; //Creationg of object kind corners for info managment
 
 	const std::vector<float> & data = msg->data; //data saving in temporal variables
 	if(data.size())
@@ -39,10 +40,10 @@ class Detections //Class Detectionss
 									data[i+6], data[i+7], data[i+8],
 									data[i+9], data[i+10], data[i+11]);
 
-                        //Creates and returns a QPointF object that is a copy of the given point, p, mapped into the coordinate system defined by this matrix.
-                        //QPointF es una clase que permite dar la coordenada x y y de un punto con precisión Float
-                        //.map Maps the given coordinates x and y into the coordinate system defined by this matrix. The resulting values are put in *tx and *ty, respectively.
-                        //Esto mapea el objeto en el tamaño total de la imagen, dando las coordenadas de las ezquinas en la imagen de escena
+            //Creates and returns a QPointF object that is a copy of the given point, p, mapped into the coordinate system defined by this matrix.
+            //QPointF es una clase que permite dar la coordenada x y y de un punto con precisión Float
+            //.map Maps the given coordinates x and y into the coordinate system defined by this matrix. The resulting values are put in *tx and *ty, respectively.
+            //Esto mapea el objeto en el tamaño total de la imagen, dando las coordenadas de las ezquinas en la imagen de escena
 			QPointF qtTopLeft = qtHomography.map(QPointF(0,0)); //top left coordinates
 			QPointF qtTopRight = qtHomography.map(QPointF(objectWidth,0)); //top right coordinates
 			QPointF qtBottomLeft = qtHomography.map(QPointF(0,objectHeight)); //bottom left coordinates
@@ -59,11 +60,11 @@ class Detections //Class Detectionss
 				{
 	   				if (orden[j-1][0] > orden[j][0]) 
 	   				{ 
-	    				  lan[0][0] = orden[j][0];
+    				  lan[0][0] = orden[j][0];
 					  lan[0][1] = orden[j][1];
 					  orden[j][0] = orden[j-1][0];
 					  orden[j][1] = orden[j-1][1];
-	    				  orden[j-1][0] = lan[0][0];
+    				  orden[j-1][0] = lan[0][0];
 					  orden[j-1][1] = lan[0][1];
 	  				 }
 				}
@@ -112,6 +113,7 @@ class Detections //Class Detectionss
 			pub.publish(info);
 		}
 	}
+	
 	else    //This else publish zeros in case there is no detection by the find object 2d
 	{	//Uncomment this line to print the results on console
 		//printf("No objects detected.\n");

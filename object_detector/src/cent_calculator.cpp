@@ -25,7 +25,7 @@ class Position
 
   void centCalculator(const object_detector::corners& msg) //Callback para el subscriber "CentCalculator"
   {	
-        object_detector::states info; //Creacion del objeto tipo corners  para manejar la info
+    object_detector::states info; //Creacion del objeto tipo corners  para manejar la info
 
 	
 	//Calculo de el Angulo Theta

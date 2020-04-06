@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<launch>
+    <!-- 
+    <node name="image_view" pkg="image_view" type="image_view" respawn="false" output="screen">
+    	<remap from="image" to="/iris/camera_red_iris/image_raw" />
+   	<param name="autosize" value="true" />
+    </node>  -->
+
+    <node pkg="find_object_2d" type="find_object_2d" name="find_object_2d" output="screen">
+        <remap from="image" to="/quad_f450_camera/camera_link/raw_image"/>
+        <param name="gui" value="true"/>
+        <param name="objects_path" value="/home/sherlock/bagfiles/Templates/simu"/>
+    </node>
+    
+    <node pkg="object_detector" type="corners_detector" name="corners_detected">
+    </node>
+    <node pkg="object_detector" type="cent_calculator" name="data_calculation">
+    </node>
+    <node pkg="object_detector" type="handmade_kf" name="KF_predictor">
+    </node>
+    <node pkg="object_detector" type="rectangle_plot_bridge" name="Rectangle_Detector">
+    </node>
+
+</launch>
