@@ -41,7 +41,7 @@ int main(int argc, char **argv)
     geometry_msgs::PoseStamped pose;
     pose.pose.position.x = 0;
     pose.pose.position.y = 0;
-    pose.pose.position.z = 0.75;
+    pose.pose.position.z = 2;
 
     //send a few setpoints before starting, esta parte en la que permite el dron entre en OFFBOARD mode
     for(int i = 100; ros::ok() && i > 0; --i){

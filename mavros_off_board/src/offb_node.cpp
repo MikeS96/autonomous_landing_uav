@@ -5,7 +5,7 @@
  */
 
 #include <ros/ros.h>
-#include <geometry_msgs/PoseStamped.h> //Con este accedo a las velocidades del vehiculo
+#include <geometry_msgs/PoseStamped.h>
 #include <mavros_msgs/CommandBool.h>
 #include <mavros_msgs/SetMode.h>
 #include <mavros_msgs/State.h>
@@ -39,9 +39,9 @@ int main(int argc, char **argv)
     }
 
     geometry_msgs::PoseStamped pose;
-    pose.pose.position.x = 0.0;
-    pose.pose.position.y = 0.0;
-    pose.pose.position.z = 2.25;
+    pose.pose.position.x = 3.68;
+    pose.pose.position.y = 4.69;
+    pose.pose.position.z = 3.5;
 
     //send a few setpoints before starting
     for(int i = 100; ros::ok() && i > 0; --i){

@@ -12,7 +12,6 @@
     <!-- vehicle model and world -->
     <arg name="vehicle" default="iris"/>
     <arg name="world" default="$(find mavros_off_board)/worlds/uni.world"/>
-    <!-- $(find mavros_off_board)/worlds/gas.world /> /home/sherlock/src/Firmware/Tools/sitl_gazeboworlds/iris.world -->
 
     <!-- gazebo configs -->
     <arg name="gui" default="true"/>

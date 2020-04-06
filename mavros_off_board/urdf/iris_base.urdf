@@ -517,7 +517,7 @@
       </geometry>
     </collision>
     <visual>
-      <origin rpy="0 1.57079632679 0" xyz="0 0 0"/>
+      <origin rpy="0 1.57079632679 0.0" xyz="0 0 0"/>
       <geometry>
         <box size="0.01 0.01 0.01"/>
       </geometry>
@@ -530,7 +530,7 @@
     </inertial>
   </link>
   <joint name="/camera_red_iris_joint" type="fixed">
-    <origin rpy="0 1.57079 0" xyz="0 0 -0.045"/>
+    <origin rpy="0 1.57079 0.0" xyz="0 0 -0.045"/>
     <parent link="base_link"/>
     <child link="/camera_red_iris_link"/>
   </joint>
