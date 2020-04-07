@@ -1,0 +1,744 @@
+<?xml version="1.0" ?>
+<robot name="quad_f450_camera" xmlns:xacro="http://ros.org/wiki/xacro">
+  <!-- base_link -->
+  <link
+    name="base_link">
+    <inertial>
+      <origin
+        xyz="0.0001429 -0.00085582 0.01685"
+        rpy="0 0 0" />
+      <mass
+        value="1.65" />
+      <inertia
+        ixx="0.014959"
+        ixy="0.0"
+        ixz="0.0"
+        iyy="0.022005"
+        iyz="0.0"
+        izz="0.028033" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://mavros_off_board/meshes/quad_f450/base_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.75294 0.75294 0.75294 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <box size="0.3585 0.3585 0.22"/>
+      </geometry>
+    </collision>
+  </link>
+  <!-- gazebo reference of the base_link -->
+  <gazebo reference="base_link">
+    <material>Gazebo/DarkGrey</material>
+    <turnGravityOff>false</turnGravityOff>
+  </gazebo>
+
+  <!-- IMU link -->
+  <link
+    name="/imu_link">
+    <inertial>
+      <origin
+        xyz="0.0 0.0 0.0"
+        rpy="0 0 0" />
+      <mass
+        value="0.015" />
+      <inertia
+        ixx="1E-05"
+        ixy="0.0"
+        ixz="0.0"
+        iyy="1E-05"
+        iyz="0.0"
+        izz="1E-05" />
+    </inertial>
+  </link>
+
+  <!-- gazebo reference of the IMU -->
+  <gazebo reference="/imu_link">
+    <material>Gazebo/DarkGrey</material>
+    <turnGravityOff>false</turnGravityOff>
+  </gazebo>
+
+  <!-- IMU joint -->
+  <joint
+    name="/imu_joint"
+    type="revolute">
+    <origin
+      xyz="0 0 0"
+      rpy="0 0 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="/imu_link" />
+    <axis
+      xyz="1 0 0" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+
+  <!-- Instantiate link rotor 0 -->
+  <link
+    name="rotor_0">
+    <inertial>
+      <origin
+        xyz="3.9364E-07 4.9255E-07 -0.00082037"
+        rpy="0 0 0" />
+      <mass
+        value="0.01" />
+      <inertia
+        ixx="8.4464E-07"
+        ixy="-7.2191E-07"
+        ixz="5.3515E-13"
+        iyy="6.4014E-07"
+        iyz="5.5137E-13"
+        izz="1.4805E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://mavros_off_board/meshes/quad_f450/propeller_0.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.75294 0.75294 0.75294 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <cylinder length="0.005" radius="0.065"/>
+      </geometry>
+    </collision>
+  </link>
+  
+  <!-- gazebo reference of the rotor 0 -->
+  <gazebo reference="rotor_0">
+    <material>Gazebo/BlueTransparent</material>
+    <turnGravityOff>false</turnGravityOff>
+  </gazebo>
+
+  <!-- Instantiate joint rotor 0 -->
+  <joint
+    name="rotor_0_joint"
+    type="revolute">
+    <origin
+      xyz="0.15891 0.15872 0.062676"
+      rpy="0 0 0.7854" />
+    <parent
+      link="base_link" />
+    <child
+      link="rotor_0" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+
+  <!-- Instantiate link rotor 1 -->
+  <link
+    name="rotor_1">
+    <inertial>
+      <origin
+        xyz="-4.0868E-07 4.4208E-07 -0.00082036"
+        rpy="0 0 0" />
+      <mass
+        value="0.01" />
+      <inertia
+        ixx="8.5496E-07"
+        ixy="7.1953E-07"
+        ixz="-4.1012E-13"
+        iyy="6.2836E-07"
+        iyz="5.491E-13"
+        izz="1.479E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://mavros_off_board/meshes/quad_f450/propeller_1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.75294 0.75294 0.75294 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <cylinder length="0.005" radius="0.065"/>
+      </geometry>
+    </collision>
+  </link>
+  
+  <!-- gazebo reference of the rotor 1 -->
+  <gazebo reference="rotor_1">
+    <material>Gazebo/BlueTransparent</material>
+    <turnGravityOff>false</turnGravityOff>
+  </gazebo>
+
+  <!-- Instantiate joint rotor 1 -->
+  <joint
+    name="rotor_1_joint"
+    type="revolute">
+    <origin
+      xyz="0.1589 -0.15909 0.062676"
+      rpy="0 0 -0.7854" />
+    <parent
+      link="base_link" />
+    <child
+      link="rotor_1" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+
+  <!-- Instantiate link rotor 2 -->
+  <link
+    name="rotor_2">
+    <inertial>
+      <origin
+        xyz="3.8516E-07 4.6306E-07 -0.00082037"
+        rpy="0 0 0" />
+      <mass
+        value="0.01" />
+      <inertia
+        ixx="3.8516E-07"
+        ixy="-7.2191E-07"
+        ixz="4.5077E-13"
+        iyy="6.4014E-07"
+        iyz="4.5674E-13"
+        izz="1.4805E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://mavros_off_board/meshes/quad_f450/propeller_0.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.75294 0.75294 0.75294 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <cylinder length="0.005" radius="0.065"/>
+      </geometry>
+    </collision>
+  </link>
+  
+  <!-- gazebo reference of the rotor 2 -->
+  <gazebo reference="rotor_2">
+    <material>Gazebo/BlueTransparent</material>
+    <turnGravityOff>false</turnGravityOff>
+  </gazebo>
+
+  <!-- Instantiate joint rotor 2 -->
+  <joint
+    name="rotor_2_joint"
+    type="revolute">
+    <origin
+      xyz="-0.15891 -0.15908 0.062676"
+      rpy="0 0 0.7854" />
+    <parent
+      link="base_link" />
+    <child
+      link="rotor_2" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+
+  <!-- Instantiate link rotor 3 -->
+  <link
+    name="rotor_3">
+    <inertial>
+      <origin
+        xyz="-4.1378E-07 4.3157E-07 -0.00082036"
+        rpy="0 0 0" />
+      <mass
+        value="0.01" />
+      <inertia
+        ixx="8.5496E-07"
+        ixy="7.1953E-07"
+        ixz="-4.184E-13"
+        iyy="6.2836E-07"
+        iyz="5.3609E-13"
+        izz="1.479E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://mavros_off_board/meshes/quad_f450/propeller_1.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.75294 0.75294 0.75294 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <cylinder length="0.005" radius="0.065"/>
+      </geometry>
+    </collision>
+  </link>
+  
+  <!-- gazebo reference of the rotor 3 -->
+  <gazebo reference="rotor_3">
+    <material>Gazebo/BlueTransparent</material>
+    <turnGravityOff>false</turnGravityOff>
+  </gazebo>
+
+  <!-- Instantiate joint rotor 3 -->
+  <joint
+    name="rotor_3_joint"
+    type="revolute">
+    <origin
+      xyz="-0.1589 0.15873 0.062676"
+      rpy="0 0 -0.7854" />
+    <parent
+      link="base_link" />
+    <child
+      link="rotor_3" />
+    <axis
+      xyz="0 0 -1" />
+    <limit
+      lower="0"
+      upper="0"
+      effort="0"
+      velocity="0" />
+  </joint>
+
+  <!-- Instantiate camera link -->
+  <link
+    name="camera_link">
+    <inertial>
+      <origin
+        xyz="-0.0013668 -1.5197E-05 0.00025326"
+        rpy="0 0 0" />
+      <mass
+        value="0.050075" />
+      <inertia
+        ixx="3.2061E-05"
+        ixy="-1.169E-08"
+        ixz="-4.2601E-10"
+        iyy="3.0815E-05"
+        iyz="5.2182E-10"
+        izz="5.1652E-06" />
+    </inertial>
+    <visual>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <mesh
+          filename="package://mavros_off_board/meshes/quad_f450/cam_link.STL" />
+      </geometry>
+      <material
+        name="">
+        <color
+          rgba="0.75294 0.75294 0.75294 1" />
+      </material>
+    </visual>
+    <collision>
+      <origin
+        xyz="0 0 0"
+        rpy="0 0 0" />
+      <geometry>
+        <box size="0.023813 0.027686 0.092682"/>
+      </geometry>
+    </collision>
+  </link>
+  
+  <!-- gazebo reference of the camera -->
+  <gazebo reference="camera_link">
+    <sensor name="camera" type="camera">
+      <update_rate>30.0</update_rate>
+      <visualize>true</visualize>
+      <always_on>1</always_on>
+      <camera name="head">
+	<pose>0 0 0 1.5708 0 0</pose>
+        <horizontal_fov>2.2</horizontal_fov>
+        <image>
+          <width>640</width>
+          <height>480</height>
+          <format>R8G8B8</format>
+        </image>
+        <clip>
+          <near>0.05</near>
+          <far>15000</far>
+        </clip>
+        <noise>
+          <type>gaussian</type>
+          <mean>0.0</mean>
+          <stddev>0.007</stddev>
+        </noise>
+      </camera>
+
+      <plugin filename="libgazebo_ros_camera.so" name="camera_en_ros">
+        <robotNamespace>quad_f450_camera</robotNamespace>
+        <alwaysOn>true</alwaysOn>
+        <updateRate>30.0</updateRate>
+        <cameraName>camera_link</cameraName>
+        <imageTopicName>raw_image</imageTopicName>
+        <cameraInfoTopicName>info_image</cameraInfoTopicName>
+        <frameName>cameraImage</frameName>
+        <hackBaseline>0.0</hackBaseline>
+        <distortionK1>0.0</distortionK1>
+        <distortionK2>0.0</distortionK2>
+        <distortionK3>0.0</distortionK3>
+        <distortionT1>0.0</distortionT1>
+        <distortionT2>0.0</distortionT2>
+      </plugin>
+
+      <plugin name="GstCameraPlugin" filename="libgazebo_gst_camera_plugin.so">
+         <robotNamespace></robotNamespace>
+         <udpPort>5600</udpPort>
+      </plugin>
+
+      <plugin name="GeotaggedImagesPlugin" filename="libgazebo_geotagged_images_plugin.so">
+            <robotNamespace>quad_f450_camera</robotNamespace>
+            <interval>1</interval>
+            <width>3840</width>
+            <height>2160</height>
+            <maximum_zoom>8.0</maximum_zoom>
+        </plugin> 
+
+    </sensor>
+
+    <mu1>1</mu1>
+    <mu2>1</mu2>
+    <kp>1e+8</kp>
+    <kd>1</kd>
+    <maxVel>0.01</maxVel>
+    <minDepth>0.001</minDepth>
+    <selfCollide>false</selfCollide>
+    <material>Gazebo/DarkGrey</material>
+    <turnGravityOff>false</turnGravityOff>
+  </gazebo>
+
+  <!-- Instantiate joint of the camera -->
+  <joint
+    name="camera_joint"
+    type="fixed">
+    <origin
+      xyz="0 0 -0.013633"
+      rpy="1.5708 1.5708 0" />
+    <parent
+      link="base_link" />
+    <child
+      link="camera_link" />
+    <axis
+      xyz="-1 0 0" />
+  </joint>
+
+  <!-- Motor 2 Plugin-->
+  <gazebo>
+    <plugin filename="libgazebo_motor_model.so" name="front_right_motor_model">
+      <robotNamespace></robotNamespace>
+      <jointName>rotor_1_joint</jointName>
+      <linkName>rotor_1</linkName>
+      <turningDirection>ccw</turningDirection>
+      <timeConstantUp>0.0125</timeConstantUp>
+      <timeConstantDown>0.025</timeConstantDown>
+      <maxRotVelocity>900</maxRotVelocity>
+      <motorConstant>12.8627e-06</motorConstant>
+      <momentConstant>0.017</momentConstant>
+      <commandSubTopic>/gazebo/command/motor_speed</commandSubTopic>
+      <motorNumber>0</motorNumber>
+      <rotorDragCoefficient>0.000806428</rotorDragCoefficient>
+      <rollingMomentCoefficient>1e-06</rollingMomentCoefficient>
+      <motorSpeedPubTopic>/motor_speed/0</motorSpeedPubTopic>
+      <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
+      <!--
+        <gazebo_joint_control_pid>
+          <p>0.1</p>
+          <i>0</i>
+          <d>0</d>
+          <iMax>0</iMax>
+          <iMin>0</iMin>
+          <cmdMax>3</cmdMax>
+          <cmdMin>-3</cmdMin>
+        </gazebo_joint_control_pid>
+      -->
+    </plugin>
+  </gazebo>
+
+  <!-- Motor 4 Plugin-->
+  <gazebo>
+    <plugin filename="libgazebo_motor_model.so" name="back_left_motor_model">
+      <robotNamespace></robotNamespace>
+      <jointName>rotor_3_joint</jointName>
+      <linkName>rotor_3</linkName>
+      <turningDirection>ccw</turningDirection>
+      <timeConstantUp>0.0125</timeConstantUp>
+      <timeConstantDown>0.025</timeConstantDown>
+      <maxRotVelocity>900</maxRotVelocity>
+      <motorConstant>12.8627e-06</motorConstant>
+      <momentConstant>0.017</momentConstant>
+      <commandSubTopic>/gazebo/command/motor_speed</commandSubTopic>
+      <motorNumber>1</motorNumber>
+      <rotorDragCoefficient>0.000806428</rotorDragCoefficient>
+      <rollingMomentCoefficient>1e-06</rollingMomentCoefficient>
+      <motorSpeedPubTopic>/motor_speed/1</motorSpeedPubTopic>
+      <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
+      <!--
+        <gazebo_joint_control_pid>
+          <p>0.1</p>
+          <i>0</i>
+          <d>0</d>
+          <iMax>0</iMax>
+          <iMin>0</iMin>
+          <cmdMax>3</cmdMax>
+          <cmdMin>-3</cmdMin>
+        </gazebo_joint_control_pid>
+      -->
+    </plugin>
+  </gazebo>
+
+  <!-- Motor 1 Plugin-->
+  <gazebo>
+    <plugin filename="libgazebo_motor_model.so" name="front_left_motor_model">
+      <robotNamespace></robotNamespace>
+      <jointName>rotor_0_joint</jointName>
+      <linkName>rotor_0</linkName>
+      <turningDirection>cw</turningDirection>
+      <timeConstantUp>0.0125</timeConstantUp>
+      <timeConstantDown>0.025</timeConstantDown>
+      <maxRotVelocity>900</maxRotVelocity>
+      <motorConstant>12.8627e-06</motorConstant>
+      <momentConstant>0.017</momentConstant>
+      <commandSubTopic>/gazebo/command/motor_speed</commandSubTopic>
+      <motorNumber>2</motorNumber>
+      <rotorDragCoefficient>0.000806428</rotorDragCoefficient>
+      <rollingMomentCoefficient>1e-06</rollingMomentCoefficient>
+      <motorSpeedPubTopic>/motor_speed/2</motorSpeedPubTopic>
+      <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
+      <!--
+        <gazebo_joint_control_pid>
+          <p>0.1</p>
+          <i>0</i>
+          <d>0</d>
+          <iMax>0</iMax>
+          <iMin>0</iMin>
+          <cmdMax>3</cmdMax>
+          <cmdMin>-3</cmdMin>
+        </gazebo_joint_control_pid>
+      -->
+    </plugin>
+  </gazebo>
+
+  <!-- Motor 3 Plugin-->
+  <gazebo>
+    <plugin filename="libgazebo_motor_model.so" name="back_right_motor_model">
+      <robotNamespace></robotNamespace>
+      <jointName>rotor_2_joint</jointName>
+      <linkName>rotor_2</linkName>
+      <turningDirection>cw</turningDirection>
+      <timeConstantUp>0.0125</timeConstantUp>
+      <timeConstantDown>0.025</timeConstantDown>
+      <maxRotVelocity>900</maxRotVelocity>
+      <motorConstant>12.8627e-06</motorConstant>
+      <momentConstant>0.017</momentConstant>
+      <commandSubTopic>/gazebo/command/motor_speed</commandSubTopic>
+      <motorNumber>3</motorNumber>
+      <rotorDragCoefficient>0.000806428</rotorDragCoefficient>
+      <rollingMomentCoefficient>1e-06</rollingMomentCoefficient>
+      <motorSpeedPubTopic>/motor_speed/3</motorSpeedPubTopic>
+      <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
+      <!--
+        <gazebo_joint_control_pid>
+          <p>0.1</p>
+          <i>0</i>
+          <d>0</d>
+          <iMax>0</iMax>
+          <iMin>0</iMin>
+          <cmdMax>3</cmdMax>
+          <cmdMin>-3</cmdMin>
+        </gazebo_joint_control_pid>
+      -->
+    </plugin>
+  </gazebo>
+
+  <!-- attach multirotor_base_plugin to the base_link -->
+  <gazebo>
+    <plugin filename="libgazebo_multirotor_base_plugin.so" name="rosbag">
+      <robotNamespace></robotNamespace>
+      <linkName>base_link</linkName>
+      <rotorVelocitySlowdownSim>10</rotorVelocitySlowdownSim>
+    </plugin>
+  </gazebo>
+
+  <!-- Instantiate gps plugin. -->
+  <gazebo>
+    <plugin filename="libgazebo_gps_plugin.so" name="gps_plugin">
+      <robotNamespace></robotNamespace>
+      <gpsNoise>true</gpsNoise>
+    </plugin>
+  </gazebo>
+
+  <!-- Magnetometer Plugin-->
+  <plugin name='magnetometer_plugin' filename='libgazebo_magnetometer_plugin.so'>
+    <robotNamespace/>
+    <pubRate>20</pubRate>
+    <noiseDensity>0.0004</noiseDensity>
+    <randomWalk>6.4e-06</randomWalk>
+    <biasCorrelationTime>600</biasCorrelationTime>
+    <magTopic>/mag</magTopic>
+  </plugin>
+
+  <!-- Barometer Plugin-->
+  <plugin name='barometer_plugin' filename='libgazebo_barometer_plugin.so'>
+    <robotNamespace/>
+    <pubRate>10</pubRate>
+    <baroTopic>/baro</baroTopic>
+  </plugin>
+
+  <!-- Instantiate mavlink telemetry interface. -->
+  <gazebo>
+    <plugin filename="libgazebo_mavlink_interface.so" name="mavlink_interface">
+      <robotNamespace></robotNamespace>
+      <imuSubTopic>/imu</imuSubTopic>
+      <gpsSubTopic>/gps</gpsSubTopic>
+      <magSubTopic>/mag</magSubTopic>
+      <baroSubTopic>/baro</baroSubTopic>
+      <mavlink_addr>INADDR_ANY</mavlink_addr>
+      <mavlink_udp_port>14560</mavlink_udp_port>
+      <mavlink_tcp_port>4560</mavlink_tcp_port>
+      <serialEnabled>false</serialEnabled>
+      <serialDevice>/dev/ttyACM0</serialDevice>
+      <baudRate>921600</baudRate>
+      <qgc_addr>INADDR_ANY</qgc_addr>
+      <qgc_udp_port>14550</qgc_udp_port>
+      <sdk_addr>INADDR_ANY</sdk_addr>
+      <sdk_udp_port>14540</sdk_udp_port>
+      <hil_mode>false</hil_mode>
+      <hil_state_level>false</hil_state_level>
+      <enable_lockstep>true</enable_lockstep>
+      <use_tcp>true</use_tcp>
+      <vehicle_is_tailsitter>false</vehicle_is_tailsitter>
+      <send_vision_estimation>true</send_vision_estimation>
+      <send_odometry>false</send_odometry>
+      <motorSpeedCommandPubTopic>/gazebo/command/motor_speed</motorSpeedCommandPubTopic>
+      <control_channels>
+        <channel name="rotor1">
+          <input_index>0</input_index>
+          <input_offset>0</input_offset>
+          <input_scaling>900</input_scaling>
+          <zero_position_disarmed>0</zero_position_disarmed>
+          <zero_position_armed>100</zero_position_armed>
+          <joint_control_type>velocity</joint_control_type>
+	  <joint_name>rotor_1_joint</joint_name>
+        </channel>
+        <channel name="rotor2">
+          <input_index>1</input_index>
+          <input_offset>0</input_offset>
+          <input_scaling>900</input_scaling>
+          <zero_position_disarmed>0</zero_position_disarmed>
+          <zero_position_armed>100</zero_position_armed>
+          <joint_control_type>velocity</joint_control_type>
+	  <joint_name>rotor_3_joint</joint_name>
+        </channel>
+        <channel name="rotor3">
+          <input_index>2</input_index>
+          <input_offset>0</input_offset>
+          <input_scaling>900</input_scaling>
+          <zero_position_disarmed>0</zero_position_disarmed>
+          <zero_position_armed>100</zero_position_armed>
+          <joint_control_type>velocity</joint_control_type>
+	  <joint_name>rotor_0_joint</joint_name>
+        </channel>
+        <channel name="rotor4">
+          <input_index>3</input_index>
+          <input_offset>0</input_offset>
+          <input_scaling>900</input_scaling>
+          <zero_position_disarmed>0</zero_position_disarmed>
+          <zero_position_armed>100</zero_position_armed>
+          <joint_control_type>velocity</joint_control_type>
+	  <joint_name>rotor_2_joint</joint_name>
+        </channel>
+      </control_channels>
+    </plugin>
+  </gazebo>
+
+  <!-- IMU plugin-->
+  <gazebo>
+    <plugin filename="libgazebo_imu_plugin.so" name="rotors_gazebo_imu_plugin">
+      <!-- A good description of the IMU parameters can be found in the kalibr documentation:
+           https://github.com/ethz-asl/kalibr/wiki/IMU-Noise-Model-and-Intrinsics -->
+      <robotNamespace></robotNamespace>
+      <!-- (string, required): ros namespace in which the messages are published -->
+      <linkName>/imu_link</linkName>
+      <!-- (string, required): name of the body which holds the IMU sensor -->
+      <imuTopic>/imu</imuTopic>
+      <!-- (string): name of the sensor output topic and prefix of service names (defaults to imu) -->
+      <gyroscopeNoiseDensity>0.0003394</gyroscopeNoiseDensity>
+      <!-- Gyroscope noise density (two-sided spectrum) [rad/s/sqrt(Hz)] -->
+      <gyroscopeRandomWalk>3.8785e-05</gyroscopeRandomWalk>
+      <!-- Gyroscope bias random walk [rad/s/s/sqrt(Hz)] -->
+      <gyroscopeBiasCorrelationTime>1000.0</gyroscopeBiasCorrelationTime>
+      <!-- Gyroscope bias correlation time constant [s] -->
+      <gyroscopeTurnOnBiasSigma>0.0087</gyroscopeTurnOnBiasSigma>
+      <!-- Gyroscope turn on bias standard deviation [rad/s] -->
+      <accelerometerNoiseDensity>0.004</accelerometerNoiseDensity>
+      <!-- Accelerometer noise density (two-sided spectrum) [m/s^2/sqrt(Hz)] -->
+      <accelerometerRandomWalk>0.006</accelerometerRandomWalk>
+      <!-- Accelerometer bias random walk. [m/s^2/s/sqrt(Hz)] -->
+      <accelerometerBiasCorrelationTime>300.0</accelerometerBiasCorrelationTime>
+      <!-- Accelerometer bias correlation time constant [s] -->
+      <accelerometerTurnOnBiasSigma>0.196</accelerometerTurnOnBiasSigma>
+      <!-- Accelerometer turn on bias standard deviation [m/s^2] -->
+    </plugin>
+  </gazebo>
+</robot>
+
