@@ -5,13 +5,13 @@
     <!-- vehicle pose -->
     <arg name="x" default="0"/>
     <arg name="y" default="0"/>
-    <arg name="z" default="0.15"/>
+    <arg name="z" default="0.5"/>
     <arg name="R" default="0"/>
     <arg name="P" default="0"/>
     <arg name="Y" default="0"/> <!-- The URDF model is rotated to get its properly pos 3.14159 -->
     <!-- vehicle model and world -->
     <arg name="vehicle" default="iris"/>
-    <arg name="world" default="$(find mavros_off_board)/worlds/uni.world"/>
+    <arg name="world" default="$(find mavlink_sitl_gazebo)/worlds/grass_pad.world"/>
 
     <!-- gazebo configs -->
     <arg name="gui" default="true"/>
@@ -43,14 +43,14 @@
         <arg name="respawn_mavros" value="$(arg respawn_mavros)"/>
     </include>
 
-    <!-- IMAGE VIEWER NODE 
+    <!-- IMAGE VIEWER NODE -->
     <node name="image_view" pkg="image_view" type="image_view" respawn="false" output="screen">
-    	<remap from="image" to="/iris/camera_red_iris/image_raw" />
+    	<remap from="image" to="/quad_f450_camera/camera_link/raw_image" />
    	<param name="autosize" value="true" />
-    </node> -->
+    </node> 
 
     <!-- Robot description -->
-    <param name="robot_description" textfile="$(find mavros_off_board)/urdf/iris_base.urdf" /> 
+    <param name="robot_description" textfile="$(find mavros_off_board)/urdf/quad_f450_camera.urdf" /> 
 
     <!-- Robot State Publisher TF  
     <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
