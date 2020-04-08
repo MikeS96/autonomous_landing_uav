@@ -10,7 +10,7 @@
     <arg name="P" default="0"/>
     <arg name="Y" default="0"/> <!-- The URDF model is rotated to get its properly pos 3.14159 -->
     <!-- vehicle model and world -->
-    <arg name="vehicle" default="iris"/>
+    <arg name="vehicle" default="quad_f450_camera"/>
     <arg name="world" default="$(find mavlink_sitl_gazebo)/worlds/grass_pad.world"/>
 
     <!-- gazebo configs -->
@@ -45,7 +45,7 @@
 
     <!-- IMAGE VIEWER NODE -->
     <node name="image_view" pkg="image_view" type="image_view" respawn="false" output="screen">
-    	<remap from="image" to="/quad_f450_camera/camera_link/raw_image" />
+    	<remap from="image" to="/iris/camera_quad_f450/image_raw" />
    	<param name="autosize" value="true" />
     </node> 
 
@@ -72,5 +72,3 @@
      
 
 </launch>
-
-
