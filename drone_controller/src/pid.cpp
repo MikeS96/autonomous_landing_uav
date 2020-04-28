@@ -1,9 +1,9 @@
 /**
- * @file pid.cpp
- * @author Miguel Saavedra (miguel.saaruiz@gmail@gmail.com)
- * @brief PID controller class implementation
- * @version 0.1
- * @date 04-16-2020
+ *  @file pid.cpp
+ *  @author Miguel Saavedra (miguel.saaruiz@gmail@gmail.com)
+ *  @brief PID controller class implementation
+ *  @version 0.1
+ *  @date 04-16-2020
  * 
  *  Copyright (c) 2020 Miguel Saavedra
  * 

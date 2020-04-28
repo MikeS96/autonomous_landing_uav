@@ -68,7 +68,7 @@ find_package( OpenCV REQUIRED ) #Requiero a OpenCV
 ## Generate messages in the 'msg' folder
  add_message_files(
    FILES
-   corners.msg
+   Corners.msg
    states.msg
  )
 
