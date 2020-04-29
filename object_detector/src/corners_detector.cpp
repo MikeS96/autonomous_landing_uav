@@ -3,7 +3,7 @@
  *  @author Miguel Saavedra (miguel.saaruiz@gmail@gmail.com)
  *  @brief Algorithm to detect the corners of a template in an image
  *  @version 0.1
- *  @date 04-28-2020
+ *  @date 04-29-2020
  * 
  *  Copyright (c) 2020 Miguel Saavedra
  * 
@@ -27,10 +27,16 @@
  */
 
 #include <ros/ros.h>
+#include <vector>
 #include <find_object_2d/ObjectsStamped.h> // find_object_2d objectStamped msj
 #include <std_msgs/Float32MultiArray.h> 
 #include "object_detector/Corners.h" // Custom msj with the corners and centroid of the object
 #include <QTransform> // Library to do the perspective transforms
+
+// Struct to sort the list of points with respect to X
+struct order {
+    bool operator() (QPointF& pt1, QPointF& pt2) { return (pt1.x() < pt2.x());}
+} sorter;
 
 class Detections
 {
@@ -46,7 +52,7 @@ class Detections
 		Detections(ros::NodeHandle ao_nh) : po_nh( ao_nh )
 		{
 			// Publisher type object_detector::corners, it publishes in /corners topic
-			pub = po_nh.advertise<object_detector::corners>( "/corners", 10 ) ; 
+			pub = po_nh.advertise<object_detector::Corners>( "/corners", 10 ) ; 
 			// Subscriber to /objects topic from find_object_2d/ObjectsStamped
 			sub = po_nh.subscribe("/objects", 10, &Detections::cornersDetectedCallback, this); 
 		}
@@ -54,7 +60,7 @@ class Detections
 		// Subscriber callback
 		void cornersDetectedCallback(const std_msgs::Float32MultiArrayConstPtr& msg) 
 		{
-			object_detector::corners info; //Creationg of object kind corners for info managment
+			object_detector::Corners coordinates; //Creationg a Corners object to publish the info
 			const std::vector<float> & data = msg->data; //data saving in temporal variables
 			if(data.size())
 			{
@@ -71,96 +77,94 @@ class Detections
 						data[i+6], data[i+7], data[i+8],
 						data[i+9], data[i+10], data[i+11]);
 
-			        //Creates and returns a QPointF object that is a copy of the given point, p, mapped into the coordinate system defined by this matrix.
-			        //QPointF es una clase que permite dar la coordenada x y y de un punto con precisión Float
-			        //.map Maps the given coordinates x and y into the coordinate system defined by this matrix. The resulting values are put in *tx and *ty, respectively.
-			        //Esto mapea el objeto en el tamaño total de la imagen, dando las coordenadas de las ezquinas en la imagen de escena
-					QPointF qtTopLeft = qtHomography.map(QPointF(0,0)); //top left coordinates
-					QPointF qtTopRight = qtHomography.map(QPointF(objectWidth,0)); //top right coordinates
-					QPointF qtBottomLeft = qtHomography.map(QPointF(0,objectHeight)); //bottom left coordinates
-					QPointF qtBottomRight = qtHomography.map(QPointF(objectWidth,objectHeight)); //bottom right coordinates
-					QPointF qCenter = qtHomography.map(QPointF(objectWidth/2,objectHeight/2)); //Cent Coordinates
-					
+			        // Map the template coordinates to the current frame with the shape of the template and homography
+					QPointF qtTopLeft = qtHomography.map(QPointF(0,0)); // Top left coordinates
+					QPointF qtTopRight = qtHomography.map(QPointF(objectWidth,0)); // Top right coordinates
+					QPointF qtBottomLeft = qtHomography.map(QPointF(0,objectHeight)); // Bottom left coordinates
+					QPointF qtBottomRight = qtHomography.map(QPointF(objectWidth,objectHeight)); // Bottom right coordinates
+					QPointF qCenter = qtHomography.map(QPointF(objectWidth/2,objectHeight/2)); // Centroid Coordinates
 
-					float orden[4][2] = { {qtTopLeft.x(), qtTopLeft.y()}, {qtTopRight.x(), qtTopRight.y()}, {qtBottomLeft.x(), qtBottomLeft.y()}, {qtBottomRight.x(), qtBottomRight.y()} };// First Column is X, second Y. This Matrix save the pixel points
-					float lan[1][2] = {0,0}; //Temporal variable to save the last position 
+					// First Column is X coordinate, second is Y.
+					std::vector<QPointF> points {qtTopLeft, qtTopRight, qtBottomLeft, qtBottomRight};
 
-					for (int i = 0; i < 4; i++) //Buble sort to know the position of each corner
-					{
-						for (int j = 1; j < 4; j++) 
-						{
-			   				if (orden[j-1][0] > orden[j][0]) 
-			   				{ 
-							  lan[0][0] = orden[j][0];
-							  lan[0][1] = orden[j][1];
-							  orden[j][0] = orden[j-1][0];
-							  orden[j][1] = orden[j-1][1];
-							  orden[j-1][0] = lan[0][0];
-							  orden[j-1][1] = lan[0][1];
-			  				 }
-						}
-					}
+					// Sort the points with respect to X inside the vector of points
+					std::sort(points.begin(), points.end(), sorter);
 
-					if(orden[0][1]>orden[1][1]) //Data publishing based on the buble sort 
-					{
-						info.BottomLeftX = orden[0][0];
-						info.BottomLeftY = orden[0][1];
-						info.TopLeftX = orden[1][0];
-						info.TopLeftY = orden[1][1];
-					}
-					else 
-					{
-						info.BottomLeftX = orden[1][0];
-						info.BottomLeftY = orden[1][1];
-						info.TopLeftX = orden[0][0];
-						info.TopLeftY = orden[0][1];
-					}
+					// Assign coordinates to the publishing object
+					assignCorners(points, coordinates);
 
-					if(orden[2][1]>orden[3][1])
-					{
-						info.BottomRightX = orden[2][0];
-						info.BottomRightY = orden[2][1];
-						info.TopRightX = orden[3][0];
-						info.TopRightY = orden[3][1];
-					}
-					else 
-					{
-						info.BottomRightX = orden[3][0];
-						info.BottomRightY = orden[3][1];
-						info.TopRightX = orden[2][0];
-						info.TopRightY = orden[2][1];
-					}
+					// Assign centroid values
+					coordinates.CenterX = qCenter.x();
+					coordinates.CenterY = qCenter.y();
 
-					info.CenterX = qCenter.x();
-					info.CenterY = qCenter.y();
-					//Uncomment these lines to print the results on console
-					/*printf("Qt corners at (%f,%f) (%f,%f) (%f,%f) (%f,%f)\n Qt Center at (%f,%f)\n", //Impresion en consola de los datos de los corners
-						
-							info.TopLeftX, info.TopLeftY,
-							info.TopRightX, info.TopRightY,
-							info.BottomLeftX, info.BottomLeftY,
-							info.BottomRightX, info.BottomRightY, info.CenterX, info.CenterY);
+					// Uncomment these lines to print the results on console
+					/*printf("Qt corners at (%f,%f) (%f,%f) (%f,%f) (%f,%f)\n Qt Center at (%f,%f)\n",
+							coordinates.TopLeftX, coordinates.TopLeftY,
+							coordinates.TopRightX, coordinates.TopRightY,
+							coordinates.BottomLeftX, coordinates.BottomLeftY,
+							coordinates.BottomRightX, coordinates.BottomRightY, 
+							coordinates.CenterX, coordinates.CenterY);
 					*/
-					pub.publish(info);
 				}
 			}
 
-			else    //This else publish zeros in case there is no detection by the find object 2d
-			{	//Uncomment this line to print the results on console
-				//printf("No objects detected.\n");
-				info.TopLeftX = 0;
-				info.TopLeftY = 0;
-				info.TopRightX = 0;
-				info.TopRightY = 0;
-				info.BottomLeftX = 0;
-				info.BottomLeftY = 0;
-				info.BottomRightX = 0;
-				info.BottomRightY = 0;
-				info.CenterX = 0;
-				info.CenterY = 0;
-				pub.publish(info);
+			// Assign zero to all the members of the publishing object
+			else   
+			{	
+				coordinates.TopLeftX = 0, coordinates.TopLeftY = 0;
+				coordinates.TopRightX = 0, coordinates.TopRightY = 0;
+				coordinates.BottomLeftX = 0, coordinates.BottomLeftY = 0;
+				coordinates.BottomRightX = 0, coordinates.BottomRightY = 0;
+				coordinates.CenterX = 0, coordinates.CenterY = 0;
+				
 			}
-		    
+			// Publish the coordinates
+			pub.publish(coordinates);
+		}
+
+		/**
+		 * Assign the corners of the publishing object
+		 *
+		 * Assign the proper corner to each element of the 
+		 * corners publishing object
+		 *
+		 * @param p vector of points.
+		 * @param c publishing object with the sorted corners
+		 */
+		void assignCorners(const std::vector<QPointF>& p, object_detector::Corners& c) 
+		{
+			// Assign the bottom left and top left corners
+			if(p[0].y() > p[1].y()) 
+				{
+					c.BottomLeftX = p[0].x();
+					c.BottomLeftY = p[0].y();
+					c.TopLeftX = p[1].x();
+					c.TopLeftY = p[1].y();
+				}
+			else 
+				{
+					c.BottomLeftX = p[1].x();
+					c.BottomLeftY = p[1].y();
+					c.TopLeftX = p[0].x();
+					c.TopLeftY = p[0].y();
+				}
+
+			// Assign the bottom right and top right corners
+			if(p[2].y() > p[3].y())
+				{
+					c.BottomRightX = p[2].x();
+					c.BottomRightY = p[2].y();
+					c.TopRightX = p[3].x();
+					c.TopRightY = p[3].y();
+				}
+			else 
+				{
+					c.BottomRightX = p[3].x();
+					c.BottomRightY = p[3].y();
+					c.TopRightX = p[2].x();
+					c.TopRightY = p[2].y();
+				}
+
 		}
 
 };

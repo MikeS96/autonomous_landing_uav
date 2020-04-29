@@ -1,6 +1,6 @@
 #include <ros/ros.h>
 #include <find_object_2d/ObjectsStamped.h>
-#include "object_detector/corners.h" //Custom msgs corners to recibe the corners from the corners detector node
+#include "object_detector/Corners.h" //Custom msgs corners to recibe the corners from the corners detector node
 #include "object_detector/states.h" //Custom msgs states t publish the states to KF
 #include <QTransform>
 
@@ -23,7 +23,7 @@ class Position
     sub = po_nh.subscribe("/corners", 10, &Position::centCalculator, this); //Suscriber del tipo object_detector/corners que se suscribe a /corners
   }
 
-  void centCalculator(const object_detector::corners& msg) //Callback para el subscriber "CentCalculator"
+  void centCalculator(const object_detector::Corners& msg) //Callback para el subscriber "CentCalculator"
   {	
     object_detector::states info; //Creacion del objeto tipo corners  para manejar la info
 
