@@ -60,11 +60,13 @@ class Detections
 		// Subscriber callback
 		void cornersDetectedCallback(const std_msgs::Float32MultiArrayConstPtr& msg) 
 		{
-			object_detector::Corners coordinates; //Creationg a Corners object to publish the info
-			const std::vector<float> & data = msg->data; //data saving in temporal variables
+			// Creation of a Corners object to publish the info
+			object_detector::Corners coordinates; 
+			// data saving in temporal variables
+			const std::vector<float> & data = msg->data; 
 			if(data.size())
 			{
-				for(unsigned int i=0; i<data.size(); i+=12) //For to extract data given by the find object 2d topic
+				for(unsigned int i=0; i<data.size(); i+=12) // For to extract data given by the find object 2d topic
 				{
 					// get data
 					int id = (int)data[i];
@@ -164,9 +166,7 @@ class Detections
 					c.TopRightX = p[2].x();
 					c.TopRightY = p[2].y();
 				}
-
 		}
-
 };
 
 
@@ -181,3 +181,4 @@ int main(int argc, char** argv)
 
     return 0;
 }
+
