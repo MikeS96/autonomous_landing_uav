@@ -97,7 +97,7 @@ class States
 		}
 
 		// Uncomment these lines to print the results on console
-		/*printf("Centroid in pix position (%f,%f)\n Object Width (%f)\n Object Height (%f)\n Theta (%f)\n", //Impresion en consola de los datos de posicion
+		/*printf("Centroid in pix position (%f,%f)\n Object Width (%f)\n Object Height (%f)\n Theta (%f)\n", 
 						
 				st.Xc, st.Yc,
 				st.W, st.H,
@@ -151,4 +151,3 @@ int main(int argc, char** argv)
 
     return 0;
 }
-
