@@ -138,71 +138,71 @@ class Kalman
             * H   [0 0 0  1  0  0  0   0   0  0]
             * Th  [0 0 0  0  1  0  0   0   0  0]
             */
-    }
-
-    // Subscriber callback
-    void predictionsDetectedCallback(const object_detector::States& msg)
-    {	
-        // Creation of a States object to publish the info
-        object_detector::States predictions;
-
-        MatrixXd measurement(5,1); // Vector to store the observations
-        measurement = MatrixXd::Zero(5,1);
-
-        // If it is the first iteration, initialize the states with the first observation
-        if(this->first_iter==0)
-        {
-            this->X(0,0) = msg.Xc; // State xc
-            this->X(1,0) = msg.Yc; // State Yc
-            this->X(2,0) = msg.W; // State Width
-            this->X(3,0) = msg.H; // State Height
-            this->X(4,0) = msg.Theta; // State Theta
-            this->X(5,0) = 0; // State Xc'
-            this->X(6,0) = 0; // State Yc'
-            this->X(7,0) = 0; // State Width'
-            this->X(8,0) = 0; // State Height'
-            this->X(9,0) = 0; // State Theta'
-            this->first_iter = 1;
         }
 
-        // Prediction step
-        this->X = this->A*this->X; 
-        this->T = ((this->A*this->T)*this->A.transpose())+this->Q;
+        // Subscriber callback
+        void predictionsDetectedCallback(const object_detector::States& msg)
+        {	
+            // Creation of a States object to publish the info
+            object_detector::States predictions;
 
-        // Update step, assign the observations to the measurement vector 
-        measurement(0,0) = msg.Xc;
-        measurement(1,0) = msg.Yc;
-        measurement(2,0) = msg.W;
-        measurement(3,0) = msg.H;
-        measurement(4,0) = msg.Theta;
+            MatrixXd measurement(5,1); // Vector to store the observations
+            measurement = MatrixXd::Zero(5,1);
 
-        // If there is a valid measurement (the detector found the coordinates)
-        if((measurement(0)>0)&&(measurement(1)>0)&&(measurement(2)>0)&&(measurement(3)>0)) 
-        {
-            // Update step
-            this->Z = measurement - this->H*this->X; 
-            this->S1 = ((this->H*this->T)*this->H.transpose())+R; 
-            this->Kg = (this->T*this->H.transpose())*this->S1.inverse(); 
-            this->X = this->X + this->Kg*this->Z; 
-            this->T = (MatrixXd::Identity(10,10)-(this->Kg*this->H))*this->T; 
+            // If it is the first iteration, initialize the states with the first observation
+            if(this->first_iter==0)
+            {
+                this->X(0,0) = msg.Xc; // State xc
+                this->X(1,0) = msg.Yc; // State Yc
+                this->X(2,0) = msg.W; // State Width
+                this->X(3,0) = msg.H; // State Height
+                this->X(4,0) = msg.Theta; // State Theta
+                this->X(5,0) = 0; // State Xc'
+                this->X(6,0) = 0; // State Yc'
+                this->X(7,0) = 0; // State Width'
+                this->X(8,0) = 0; // State Height'
+                this->X(9,0) = 0; // State Theta'
+                this->first_iter = 1;
+            }
+
+            // Prediction step
+            this->X = this->A*this->X; 
+            this->T = ((this->A*this->T)*this->A.transpose())+this->Q;
+
+            // Update step, assign the observations to the measurement vector 
+            measurement(0,0) = msg.Xc;
+            measurement(1,0) = msg.Yc;
+            measurement(2,0) = msg.W;
+            measurement(3,0) = msg.H;
+            measurement(4,0) = msg.Theta;
+
+            // If there is a valid measurement (the detector found the coordinates)
+            if((measurement(0)>0)&&(measurement(1)>0)&&(measurement(2)>0)&&(measurement(3)>0)) 
+            {
+                // Update step
+                this->Z = measurement - this->H*this->X; 
+                this->S1 = ((this->H*this->T)*this->H.transpose())+R; 
+                this->Kg = (this->T*this->H.transpose())*this->S1.inverse(); 
+                this->X = this->X + this->Kg*this->Z; 
+                this->T = (MatrixXd::Identity(10,10)-(this->Kg*this->H))*this->T; 
+            }
+
+            // Assign the predictions to the publisher object
+            predictions.Xc = this->X(0,0);
+            predictions.Yc = this->X(1,0);
+            predictions.W = this->X(2,0);
+            predictions.H = this->X(3,0);
+            predictions.Theta = this->X(4,0);
+
+            // Uncomment these lines to print the results on console
+            printf("The Centroid predicted with KF are (%f,%f)\n The Width is (%f)\n The Height is (%f)\n Theta is (%f)\n", 
+
+            	predictions.Xc, predictions.Yc,
+            	predictions.W, predictions.H,
+            	predictions.Theta);
+            
+            pub.publish(predictions);
         }
-
-        // Assign the predictions to the publisher object
-        predictions.Xc = this->X(0,0);
-        predictions.Yc = this->X(1,0);
-        predictions.W = this->X(2,0);
-        predictions.H = this->X(3,0);
-        predictions.Theta = this->X(4,0);
-
-        // Uncomment these lines to print the results on console
-        printf("The Centroid predicted with KF are (%f,%f)\n The Width is (%f)\n The Height is (%f)\n Theta is (%f)\n", 
-
-        	predictions.Xc, predictions.Yc,
-        	predictions.W, predictions.H,
-        	predictions.Theta);
-        
-        pub.publish(predictions);
-    }
 };
 
 
