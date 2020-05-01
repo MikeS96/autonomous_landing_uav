@@ -69,7 +69,7 @@ find_package( OpenCV REQUIRED ) #Requiero a OpenCV
  add_message_files(
    FILES
    Corners.msg
-   states.msg
+   States.msg
  )
 
 ## Generate services in the 'srv' folder
