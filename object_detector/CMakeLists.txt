@@ -136,8 +136,8 @@ catkin_package(
 include_directories(
 # include
   ${catkin_INCLUDE_DIRS}
-  ${EIGEN3_INCLUDE_DIR} #incluyo el directorio de eigen 3
-  ${OpenCV_INCLUDE_DIRS}#Incluyo directorios de Open CV
+  ${EIGEN3_INCLUDE_DIR}  # include eigen 3
+  ${OpenCV_INCLUDE_DIRS} # include Open CV
   
 )
 
@@ -221,17 +221,17 @@ include_directories(
 
 #This scripts computes the position of the corners in Px and publish it in the ROS pipeline
 add_executable(corners_detector src/corners_detector.cpp)
-target_link_libraries(corners_detector ${catkin_LIBRARIES} ${QT_LIBRARIES}) #QT librerie
+target_link_libraries(corners_detector ${catkin_LIBRARIES} ${QT_LIBRARIES}) 
 add_dependencies(corners_detector object_detector_generate_messages_cpp)
 #This scripts computes the center of the image, angle measured with the X axis and the Height and Width of the image
 add_executable(cent_calculator src/cent_calculator.cpp)
-target_link_libraries(cent_calculator ${catkin_LIBRARIES} ${QT_LIBRARIES} ${Eigen_LIBRARIES}) #libreria QT y Eigen
+target_link_libraries(cent_calculator ${catkin_LIBRARIES})
 add_dependencies(cent_calculator object_detector_generate_messages_cpp)
 #This scripts is a Kalman filter to do tracking of the variables mentioned
 add_executable(kalman_filter src/kalman_filter.cpp)
-target_link_libraries(kalman_filter ${catkin_LIBRARIES} ${Eigen_LIBRARIES}) #libreria QT y Eigen
+target_link_libraries(kalman_filter ${catkin_LIBRARIES} ${Eigen_LIBRARIES})
 add_dependencies(kalman_filter object_detector_generate_messages_cpp)
 #This scripts is optional and plot the result of the tracking system
-add_executable(rectangle_plot_bridge src/rectangle_plot_bridge.cpp)
-target_link_libraries(rectangle_plot_bridge ${catkin_LIBRARIES} ${OpenCV_LIBS}) #libreria QT y Eigen
-add_dependencies(rectangle_plot_bridge object_detector_generate_messages_cpp)
+add_executable(plot_estimation src/plot_estimation.cpp)
+target_link_libraries(plot_estimation ${catkin_LIBRARIES} ${OpenCV_LIBS}) 
+add_dependencies(plot_estimation object_detector_generate_messages_cpp)

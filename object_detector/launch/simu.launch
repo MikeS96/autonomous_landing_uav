@@ -11,14 +11,14 @@
         <param name="gui" value="true"/>
         <param name="objects_path" value="/home/sherlock/bagfiles/Templates/simu"/>
     </node>
-    
+     
     <node pkg="object_detector" type="corners_detector" name="corners_detected">
     </node>
     <node pkg="object_detector" type="cent_calculator" name="data_calculation">
     </node>
-    <node pkg="object_detector" type="handmade_kf" name="KF_predictor">
+    <node pkg="object_detector" type="kalman_filter" name="KF_predictor">
     </node>
-    <node pkg="object_detector" type="rectangle_plot_bridge" name="Rectangle_Detector">
-    </node>
+    <node pkg="object_detector" type="plot_estimation" name="Rectangle_Detector">
+    </node> 
 
 </launch>
