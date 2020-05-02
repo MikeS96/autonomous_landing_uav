@@ -52,19 +52,16 @@
     <!-- Robot description -->
     <param name="robot_description" textfile="$(find mavros_off_board)/urdf/quad_f450_camera.urdf" /> 
 
-    <!-- Robot State Publisher TF  
+    <!-- Robot State Publisher TF  -->
     <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher">
         <param name="publish_frequency" type="double" value="30.0" />
-    </node> -->
+    </node> 
 
-    <!-- Robot Joint Publisher  
-    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" /> -->
+    <!-- Robot Joint Publisher -->
+    <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher" /> 
 
-    <!-- Launch visualization in rviz 
-    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find mavros_off_board)/urdf.rviz" required="true" /> -->
-
-    <!-- Launch visualization in Gazebo with URDF spawner
-    <node name="urdf_spawner" pkg="gazebo_ros" type="spawn_model" respawn="false" output="screen" args="-urdf -model iris -param robot_description"/> -->
+    <!-- Launch visualization in rviz -->
+    <node name="rviz" pkg="rviz" type="rviz" args="-d $(find mavros_off_board)/urdf.rviz" required="true" /> 
 
      <!-- gazebo model spawn -->
      <node name="$(anon vehicle_spawn)" output="screen" pkg="gazebo_ros" type="spawn_model"
