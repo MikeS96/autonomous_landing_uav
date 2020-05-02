@@ -27,6 +27,8 @@ Panels:
     Name: Time
     SyncMode: 0
     SyncSource: ""
+Toolbars:
+  toolButtonStyle: 2
 Visualization Manager:
   Class: ""
   Displays:
@@ -53,7 +55,7 @@ Visualization Manager:
       Collision Enabled: false
       Enabled: true
       Links:
-        /camera_red_iris_link:
+        /camera_quad_f450_link:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -109,21 +111,21 @@ Visualization Manager:
         All Enabled: true
         base_link:
           Value: true
+        base_link_frd:
+          Value: true
         base_link_inertia:
           Value: true
-        camera_red_iris_link:
-          Value: true
-        fcu:
-          Value: true
-        fcu_frd:
+        camera_quad_f450_link:
           Value: true
         imu_link:
           Value: true
-        local_origin:
-          Value: true
-        local_origin_ned:
-          Value: true
         map:
+          Value: true
+        map_ned:
+          Value: true
+        odom:
+          Value: true
+        odom_ned:
           Value: true
         rotor_0:
           Value: true
@@ -139,29 +141,33 @@ Visualization Manager:
       Show Axes: true
       Show Names: true
       Tree:
+        base_link:
+          base_link_frd:
+            {}
+          base_link_inertia:
+            {}
+          camera_quad_f450_link:
+            {}
+          imu_link:
+            {}
+          rotor_0:
+            {}
+          rotor_1:
+            {}
+          rotor_2:
+            {}
+          rotor_3:
+            {}
         map:
-          base_link:
-            base_link_inertia:
-              {}
-            camera_red_iris_link:
-              {}
-            imu_link:
-              {}
-            rotor_0:
-              {}
-            rotor_1:
-              {}
-            rotor_2:
-              {}
-            rotor_3:
-              {}
+          map_ned:
+            {}
       Update Interval: 0
       Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
     Default Light: true
-    Fixed Frame: map
+    Fixed Frame: base_link
     Frame Rate: 30
   Name: root
   Tools:
@@ -182,7 +188,7 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz/Orbit
-      Distance: 10
+      Distance: 3.90215302
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.0599999987
         Stereo Focal Distance: 1
