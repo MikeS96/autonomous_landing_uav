@@ -4,7 +4,7 @@
 ROS packages developed for the autonomous landing of a UAV on a stationary platform.
 
 <div  align="center">
-<img src="./images/land_gif.gif" width="330" />
+<img src="./images/land_gif.gif" width="480" />
 </div>
 
 ## Description
@@ -58,9 +58,8 @@ The system has four launch files embedded in *mavros_off_board* and these are us
 
 The frames and TF of the vehicle in Rviz are shown in the next image.
 
-
 <div  align="center">
-<img  src="./images/rviz.png" width="330">
+<img src="./images/rviz_gif.gif" width="480" />
 </div>
 
 Use the launch files based on your own needs. If you need only simulate the vehicle use **mavros_posix_sitl.launch**, but if visualization in Rviz is also needed use **urdf_launcher.launch**. 
