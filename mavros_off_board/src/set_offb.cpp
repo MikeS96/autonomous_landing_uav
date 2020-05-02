@@ -1,11 +1,11 @@
 /**
- * @file offb_node.cpp
+ * @file set_offb.cpp
  * @brief Offboard control example node, written with MAVROS version 0.19.x, PX4 Pro Flight
  * Stack and tested in Gazebo SITL
  */
 
 #include <ros/ros.h>
-#include <geometry_msgs/PoseStamped.h> //Con este accedo a las velocidades del vehiculo
+#include <geometry_msgs/PoseStamped.h> 
 #include <mavros_msgs/CommandBool.h>
 #include <mavros_msgs/SetMode.h>
 #include <mavros_msgs/State.h>
