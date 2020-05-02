@@ -1,3 +1,4 @@
+<?xml version="1.0" ?>
 <sdf version='1.6'>
   <world name='default'>
     <light name='sun' type='directional'>
@@ -84,16 +85,16 @@
       <wall_time>1584716243 20415327</wall_time>
       <iterations>934684</iterations>
       <model name='conejo_visual_marker'>
-        <pose frame=''>3.68526 4.69292 0.051 0 -0 0</pose>
+        <pose frame=''>3.68526 4.69292 0.051 0.0 0.0 0.7</pose>
         <scale>1 1 1</scale>
         <link name='marker'>
-          <pose frame=''>3.68526 4.69292 0.051 0 -0 0</pose>
+          <pose frame=''>3.68526 4.69292 0.051 0.0 0.0 0.7</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
         </link>
         <link name='marker_pad'>
-          <pose frame=''>3.68526 4.69292 0.05099 0 -0 0</pose>
+          <pose frame=''>3.68526 4.69292 0.05099 0.0 0.0 0.7</pose>
           <velocity>0 0 0 0 -0 0</velocity>
           <acceleration>0 0 0 0 -0 0</acceleration>
           <wrench>0 0 0 0 -0 0</wrench>
@@ -146,7 +147,7 @@
         <visual name='visual'>
           <geometry>
             <box>
-              <size>0.35 0.35 1e-05</size>
+              <size>0.9 0.9 1e-05</size>
             </box>
           </geometry>
           <material>
