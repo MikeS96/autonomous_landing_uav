@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8.3)
 project(drone_controller)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-# add_compile_options(-std=c++11)
+add_compile_options(-std=c++11)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
@@ -52,8 +52,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## Generate messages in the 'msg' folder
 add_message_files(
    FILES
-   states.msg
-   error.msg
+   Error.msg
 )
 
 ## Generate services in the 'srv' folder
@@ -124,9 +123,7 @@ include_directories(
 )
 
 ## Declare a C++ library
-# add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/drone_controller.cpp
-# )
+add_library(pid src/pid.cpp)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -199,30 +196,35 @@ include_directories(
 # endif()
 
 ## Add folders to be run by python nosetests
-# catkin_add_nosetests(test)
+# catkin_add_nosetests(test)s
 
 #Proportional controller for the drone landing in 4 axis
-add_executable(propotional src/propotional.cpp)
-target_link_libraries(propotional ${catkin_LIBRARIES})
-add_dependencies(propotional drone_controller_generate_messages_cpp)
+add_executable(proportional_controller src/proportional_controller.cpp)
+target_link_libraries(proportional_controller ${catkin_LIBRARIES})
+add_dependencies(proportional_controller drone_controller_generate_messages_cpp)
+add_dependencies(proportional_controller ${catkin_EXPORTED_TARGETS})
 #Proportional controller for just traslational X and Y control
 add_executable(proportional_traslation src/proportional_traslation.cpp)
 target_link_libraries(proportional_traslation ${catkin_LIBRARIES})
 add_dependencies(proportional_traslation drone_controller_generate_messages_cpp)
+add_dependencies(proportional_traslation ${catkin_EXPORTED_TARGETS})
 #Proportional controller for rotational and traslational control
-add_executable(rotate src/rotate.cpp)
-target_link_libraries(rotate ${catkin_LIBRARIES})
-add_dependencies(rotate drone_controller_generate_messages_cpp)
+add_executable(proportional_rotate src/proportional_rotate.cpp)
+target_link_libraries(proportional_rotate ${catkin_LIBRARIES})
+add_dependencies(proportional_rotate drone_controller_generate_messages_cpp)
+add_dependencies(proportional_rotate ${catkin_EXPORTED_TARGETS})
 #Proportional and derivative controller for just traslational X and Y control
-add_executable(pid_controller_tras src/pid_controller_tras.cpp src/pid.cpp)
-target_link_libraries(pid_controller_tras ${catkin_LIBRARIES})
+add_executable(pid_controller_tras src/pid_controller_tras.cpp)
+target_link_libraries(pid_controller_tras ${catkin_LIBRARIES} pid)
 add_dependencies(pid_controller_tras drone_controller_generate_messages_cpp)
+add_dependencies(pid_controller_tras ${catkin_EXPORTED_TARGETS})
 #Proportional and derivative controller for rotational and traslational contro
-add_executable(pid_controller_rotate src/pid_controller_rotate.cpp src/pid.cpp)
-target_link_libraries(pid_controller_rotate ${catkin_LIBRARIES})
+add_executable(pid_controller_rotate src/pid_controller_rotate.cpp)
+target_link_libraries(pid_controller_rotate ${catkin_LIBRARIES} pid)
 add_dependencies(pid_controller_rotate drone_controller_generate_messages_cpp)
+add_dependencies(pid_controller_rotate ${catkin_EXPORTED_TARGETS})
 #Proportional and derivative controller for the drone landing in 4 axis
-add_executable(pid_controller_final src/pid_controller_final.cpp src/pid.cpp)
-target_link_libraries(pid_controller_final ${catkin_LIBRARIES})
+add_executable(pid_controller_final src/pid_controller_final.cpp)
+target_link_libraries(pid_controller_final ${catkin_LIBRARIES} pid)
 add_dependencies(pid_controller_final drone_controller_generate_messages_cpp)
-
+add_dependencies(pid_controller_final ${catkin_EXPORTED_TARGETS})
