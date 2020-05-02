@@ -5,14 +5,11 @@ from __future__ import print_function
 import roslib; roslib.load_manifest('teleop_twist_keyboard')
 import rospy
 
-from mavros_msgs.msg import PositionTarget #Modify the kind of message that im going to use
-
-from mavros_msgs.srv import SetMode  #To change fly mode of the drone
+from mavros_msgs.msg import PositionTarget # Use PositionTarget
+from mavros_msgs.srv import SetMode  
 from mavros_msgs.srv import CommandBool
 from mavros_msgs.srv import CommandTOL
 import time
-
-#mavros_msgs/CommandTOL
 
 import sys, select, termios, tty
 
@@ -42,7 +39,7 @@ CTRL-C to quit
 
 moveBindings = {
 
-		#the commented works, but it is inverted i dont know why... so i inverted the controls
+		# Traslations bindings
 		'w':(1,0,1,0),  # Vx, Vy, Z and Yaw_rate
 		'a':(0,-1,1,0),
 		'd':(0,1,1,0),
@@ -56,13 +53,13 @@ moveBindings = {
 	       }
 
 speedBindings={
-		'r':(1.1,1.1,1), #reduce speed and turn
+		'r':(1.1,1.1,1), # Reduce speed and turn
 		'v':(.9,.9,1),
-		't':(1.1,1,1), #reduce only speed
+		't':(1.1,1,1), # Reduce only speed
 		'b':(.9,1,1),
-		'y':(1,1.1,1), #reduce only turn
+		'y':(1,1.1,1), # Reduce only turn
 		'n':(1,.9,1),
-		'i':(1,1,1.1), #reduce only heigh
+		'i':(1,1,1.1), # Reduce only heigh
 		',':(1,1,.9),
 	      }
 
@@ -83,8 +80,9 @@ def vels(speed,turn):
 if __name__=="__main__":
     	settings = termios.tcgetattr(sys.stdin)
 	
-	pub = rospy.Publisher('/mavros/setpoint_raw/local', PositionTarget, queue_size = 10) #Add The topic /mavros/setpoint_raw/local, to publish the info in the right place
-	rospy.init_node('teleop_node_local')  #The topic /mavros/setpoint_attitude/cmd_vel doesnt hold altitude
+	# Publish in the /mavros/setpoint_raw/local This topic controls position and speed
+	pub = rospy.Publisher('/mavros/setpoint_raw/local', PositionTarget, queue_size = 10)
+	rospy.init_node('teleop_node_local')  # Init node
 
 	#Arming Service, True for Arming and False for disarm
 	arming_cl = rospy.ServiceProxy('/mavros/cmd/arming', CommandBool)
@@ -98,10 +96,11 @@ if __name__=="__main__":
 	#Changing mode service
 	change_mode = rospy.ServiceProxy('/mavros/set_mode', SetMode)
 
+	# Set linear and angular speed
 	speed = rospy.get_param("~speed", 1.5)
 	turn = rospy.get_param("~turn", 1.0)
+	# Parameters initialization
 	alt = 2
-
 	vx = 0
 	vy = 0
 	z = 0
@@ -134,27 +133,27 @@ if __name__=="__main__":
 				status = (status + 1) % 15
 
 
-			elif key == '2': #Key for arming
+			elif key == '2': # Key for arming
 			       rospy.wait_for_service('/mavros/cmd/arming')
                                response = arming_cl(value = True)
 			       rospy.loginfo(response)
 
-    			elif key == '4': #Key for disarming
+    			elif key == '4': # Key for disarming
    			       rospy.wait_for_service('/mavros/cmd/arming')
                                response = arming_cl(value = False)
 			       rospy.loginfo(response)
 
-    			elif key == '3': #Key for takeoff, with a altitude of 10 (Modify it)
+    			elif key == '3': # Key for takeoff, with a altitude of 3
    			       rospy.wait_for_service('/mavros/cmd/takeoff')
                                response = takeoff_cl(altitude=3, latitude=0, longitude=0, min_pitch=0, yaw=0)
 			       rospy.loginfo(response)
 
-			elif key == '5': #Key for Landing, with a altitude of 0 (Modify it if u want)
+			elif key == '5': # Key for Landing, with a altitude of 0 
    			       rospy.wait_for_service('/mavros/cmd/land')
                                response = landing_cl(altitude=0, latitude=0, longitude=0, min_pitch=0, yaw=0)
 			       rospy.loginfo(response)
 
-			elif key == '1': #Key for changing mode, change it based on youw own needs.
+			elif key == '1': # Key for changing mode
    			       rospy.wait_for_service('/mavros/set_mode')
                                response = change_mode(custom_mode="OFFBOARD")
 			       rospy.loginfo(response)
@@ -167,13 +166,13 @@ if __name__=="__main__":
 				if (key == '\x03'):
 					break
 
-			post = PositionTarget() #Change the constructor Twist for TwistStamped
+			post = PositionTarget() # Use PositionTarget publisher
 			post.header.frame_id = "home"
    		        post.header.stamp = rospy.Time.now()
     		        post.coordinate_frame = 8 # pos.coordinate_frame = mavros_msgs::PositionTarget::FRAME_LOCAL_NED;
     			post.type_mask  = mask
-			post.position.z = z*alt; #Pos Position
-			post.velocity.x = vy*speed; post.velocity.y = vx*speed; #X and Y velocity
+			post.position.z = z*alt; # Altittude Position
+			post.velocity.x = vy*speed; post.velocity.y = vx*speed; # X and Y velocity
 			post.yaw_rate = yaw_rate*turn # Yaw rate
 			pub.publish(post)
 			rate.sleep()
@@ -182,13 +181,13 @@ if __name__=="__main__":
 		print(e)
 
 	finally:
-		post = PositionTarget() #Change the constructor Twist for TwistStamped
+		post = PositionTarget() # Use PositionTarget publisher
 		post.header.frame_id = "home"
    		post.header.stamp = rospy.Time.now()
     		post.coordinate_frame = 8 # pos.coordinate_frame = mavros_msgs::PositionTarget::FRAME_LOCAL_NED;
     		post.type_mask  = mask
-		post.position.z = 1; #Pos Position
-		post.velocity.x = 0; post.velocity.y = 0; #X and Y velocity
+		post.position.z = 1; # Altittude Position
+		post.velocity.x = 0; post.velocity.y = 0; # X and Y velocity
 		post.yaw_rate = 0 # Yaw rate
 		pub.publish(post)
 		rate.sleep()

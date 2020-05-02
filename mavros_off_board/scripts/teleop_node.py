@@ -5,14 +5,12 @@ from __future__ import print_function
 import roslib; roslib.load_manifest('teleop_twist_keyboard')
 import rospy
 
-from geometry_msgs.msg import TwistStamped #Modify the kind of message that im going to use
+from geometry_msgs.msg import TwistStamped # Use TwistStamped
 
-from mavros_msgs.srv import SetMode  #To change fly mode of the drone
+from mavros_msgs.srv import SetMode  # Change fly mode of the vehicle
 from mavros_msgs.srv import CommandBool
 from mavros_msgs.srv import CommandTOL
 import time
-
-#mavros_msgs/CommandTOL
 
 import sys, select, termios, tty
 
@@ -41,9 +39,9 @@ CTRL-C to quit
 
 moveBindings = {
 
-		#the commented works, but it is inverted i dont know why... so i inverted the controls
-		'w':(-1,0,0,0,0,0),  # X, Y, Z, Roll, Pitch, Yaw, 
-		'q':(-1,-1,0,0,0,0),  #Traslational movements
+		# Traslations bindings
+		'w':(-1,0,0,0,0,0),  # X, Y, Z, Roll, Pitch, Yaw,
+		'q':(-1,-1,0,0,0,0),  
 		'e':(-1,1,0,0,0,0),
 		's':(0,0,0,0,0,0),
 		'a':(0,-1,0,0,0,0),
@@ -52,18 +50,8 @@ moveBindings = {
 		'z':(1,-1,0,0,0,0),
 		'c':(1,1,0,0,0,0),
 
-
-	#	'w':(1,0,0,0,0,0),  # X, Y, Z, Roll, Pitch, Yaw, 
-	#	'q':(1,1,0,0,0,0),  #Traslational movements
-	#	'e':(1,-1,0,0,0,0),
-	#	's':(0,0,0,0,0,0),
-	#	'a':(0,1,0,0,0,0),
-	#	'd':(0,-1,0,0,0,0),
-	#	'x':(-1,0,0,0,0,0),
-	#	'z':(-1,1,0,0,0,0),
-	#	'c':(-1,-1,0,0,0,0),
-
-		'i':(0,0,1,0,0,0), #Up and dowm and yaw rotation
+		# Altittude and rotation bindings
+		'i':(0,0,1,0,0,0),
 		',':(0,0,-1,0,0,0),
 		'u':(0,0,1,0,0,1),
 		'o':(0,0,1,0,0,-1),
@@ -75,7 +63,7 @@ moveBindings = {
 	       }
 
 speedBindings={
-		'r':(1.1,1.1),
+		'r':(1.1,1.1), # Linear, angular speed
 		'v':(.9,.9),
 		't':(1.1,1),
 		'b':(.9,1),
@@ -96,28 +84,31 @@ def vels(speed,turn):
 
 if __name__=="__main__":
     	settings = termios.tcgetattr(sys.stdin)
-	
-	pub = rospy.Publisher('/mavros/setpoint_velocity/cmd_vel', TwistStamped, queue_size = 1) #Add The topic /maos/setpoint_velocity/cmd_vel, to publish the info in the right place
-	rospy.init_node('teleop_node')  #The topic /mavros/setpoint_attitude/cmd_vel doesnt hold altitude
 
-	#Arming Service, True for Arming and False for disarm
+	# Publish in the setpont_velocity/cmd_vel This topic only control speeds.
+	pub = rospy.Publisher('/mavros/setpoint_velocity/cmd_vel', TwistStamped, queue_size = 1)
+	rospy.init_node('teleop_node')  # Init node
+
+	# Arming Service, True for Arming and False for disarm
 	arming_cl = rospy.ServiceProxy('/mavros/cmd/arming', CommandBool)
 
-	#Takeoff Service
+	#T akeoff Service
 	takeoff_cl = rospy.ServiceProxy('/mavros/cmd/takeoff', CommandTOL)
 
-	#Landing service
+	# Landing service
 	landing_cl = rospy.ServiceProxy('/mavros/cmd/land', CommandTOL)
 
-	#Changing mode service
+	# Changing mode service
 	change_mode = rospy.ServiceProxy('/mavros/set_mode', SetMode)
 
+	# Set linear and angular speed
 	speed = rospy.get_param("~speed", 0.5)
 	turn = rospy.get_param("~turn", 1.0)
+	# Parameters initialization
 	x = 0
 	y = 0
 	z = 0
-	roll = 0 #Add roll pitch and yaw zero initialization
+	roll = 0 
 	pitch = 0
 	yaw = 0
 	status = 0
@@ -131,7 +122,7 @@ if __name__=="__main__":
 				x = moveBindings[key][0]
 				y = moveBindings[key][1]
 				z = moveBindings[key][2]
-				roll = moveBindings[key][3] #ADD roll, pitch and yaw key
+				roll = moveBindings[key][3]
 				pitch = moveBindings[key][4]
 				yaw = moveBindings[key][5]
 			elif key in speedBindings.keys():
@@ -144,27 +135,27 @@ if __name__=="__main__":
 				status = (status + 1) % 15
 
 
-			elif key == '2': #Key for arming
+			elif key == '2': # Key for arming
 			       rospy.wait_for_service('/mavros/cmd/arming')
                                response = arming_cl(value = True)
 			       rospy.loginfo(response)
 
-    			elif key == '4': #Key for disarming
+    			elif key == '4': # Key for disarming
    			       rospy.wait_for_service('/mavros/cmd/arming')
                                response = arming_cl(value = False)
 			       rospy.loginfo(response)
 
-    			elif key == '3': #Key for takeoff, with a altitude of 10 (Modify it)
+    			elif key == '3': # Key for takingoff, with a altitude of 5 (Modify it)
    			       rospy.wait_for_service('/mavros/cmd/takeoff')
                                response = takeoff_cl(altitude=5, latitude=0, longitude=0, min_pitch=0, yaw=0)
 			       rospy.loginfo(response)
 
-			elif key == '5': #Key for Landing, with a altitude of 0 (Modify it if u want)
+			elif key == '5': # Key for Landing
    			       rospy.wait_for_service('/mavros/cmd/land')
                                response = landing_cl(altitude=0, latitude=0, longitude=0, min_pitch=0, yaw=0)
 			       rospy.loginfo(response)
 
-			elif key == '1': #Key for changing mode, change it based on youw own needs.
+			elif key == '1': # Key for changing mode, change it based on your own needs.
    			       rospy.wait_for_service('/mavros/set_mode')
                                response = change_mode(custom_mode="OFFBOARD")
 			       rospy.loginfo(response)
@@ -173,16 +164,15 @@ if __name__=="__main__":
 				x = 0
 				y = 0
 				z = 0
-				roll = 0  #ADD roll, pitch and yaw key
+				roll = 0  
 				pitch = 0
 				yaw = 0
 				if (key == '\x03'):
 					break
 
-			twist = TwistStamped() #Change the constructor Twist for TwistStamped
-                        twist.header.frame_id = "1" #"base_link"
+			twist = TwistStamped() # Changed the constructor Twist for TwistStamped
+                        twist.header.frame_id = "1" 
    		        twist.header.stamp = rospy.Time.now()
-			# twist.header.stamp.secs = now.secs
 			twist.twist.linear.x = x*speed; twist.twist.linear.y = y*speed; twist.twist.linear.z = z*speed; #Change the object and method to use in linear and angular speed
 			twist.twist.angular.x = roll*turn; twist.twist.angular.y = pitch*turn; twist.twist.angular.z = yaw*turn #Add roll, pitch, yaw varaibles to be published
 			pub.publish(twist)
@@ -191,8 +181,8 @@ if __name__=="__main__":
 		print(e)
 
 	finally:
-		twist = TwistStamped() #Change the constructor Twist for TwistStamped
-		twist.twist.linear.x = 0; twist.twist.linear.y = 0; twist.twist.linear.z = 0 #Change the object and method to use in linear and angular speed
+		twist = TwistStamped() # Changed the constructor Twist for TwistStamped
+		twist.twist.linear.x = 0; twist.twist.linear.y = 0; twist.twist.linear.z = 0
 		twist.twist.angular.x = 0; twist.twist.angular.y = 0; twist.twist.angular.z = 0
 		pub.publish(twist)
 
