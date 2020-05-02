@@ -195,11 +195,12 @@ class Kalman
             predictions.Theta = this->X(4,0);
 
             // Uncomment these lines to print the results on console
-            printf("The Centroid predicted with KF are (%f,%f)\n The Width is (%f)\n The Height is (%f)\n Theta is (%f)\n", 
+            /* printf("The Centroid predicted with KF are (%f,%f)\n The Width is (%f)\n The Height is (%f)\n Theta is (%f)\n", 
 
             	predictions.Xc, predictions.Yc,
             	predictions.W, predictions.H,
             	predictions.Theta);
+            */
             
             pub.publish(predictions);
         }
