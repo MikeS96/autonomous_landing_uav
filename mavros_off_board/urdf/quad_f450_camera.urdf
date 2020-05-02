@@ -64,7 +64,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://mavros_off_board/meshes/quad_f450/base_link.STL" scale="1 1 1"/>
+        <mesh filename="package://mavros_off_board/meshes/base_link.STL" scale="1 1 1"/>
         <!-- <box size="${body_width} ${body_width} ${body_height}"/> -->
         <!-- [m] [m] [m] -->
       </geometry>
@@ -124,7 +124,7 @@
         <!-- <cylinder length="0.005" radius="${radius_rotor}"/> -->
         <!-- [m] -->
         <!-- <mesh filename="package://rotors_description/meshes/propeller_${direction}.dae" -->
-        <mesh filename="package://mavros_off_board/meshes/quad_f450/propeller_1.STL" scale="1 1 1"/>
+        <mesh filename="package://mavros_off_board/meshes/propeller_1.STL" scale="1 1 1"/>
         <!-- <box size="${2*radius_rotor} 0.01 0.005"/> -->
       </geometry>
     </visual>
@@ -190,7 +190,7 @@
         <!-- <cylinder length="0.005" radius="${radius_rotor}"/> -->
         <!-- [m] -->
         <!-- <mesh filename="package://rotors_description/meshes/propeller_${direction}.dae" -->
-        <mesh filename="package://mavros_off_board/meshes/quad_f450/propeller_1.STL" scale="1 1 1"/>
+        <mesh filename="package://mavros_off_board/meshes/propeller_1.STL" scale="1 1 1"/>
         <!-- <box size="${2*radius_rotor} 0.01 0.005"/> -->
       </geometry>
     </visual>
@@ -256,7 +256,7 @@
         <!-- <cylinder length="0.005" radius="${radius_rotor}"/> -->
         <!-- [m] -->
         <!-- <mesh filename="package://rotors_description/meshes/propeller_${direction}.dae" -->
-        <mesh filename="package://mavros_off_board/meshes/quad_f450/propeller_0.STL" scale="1 1 1"/>
+        <mesh filename="package://mavros_off_board/meshes/propeller_0.STL" scale="1 1 1"/>
         <!-- <box size="${2*radius_rotor} 0.01 0.005"/> -->
       </geometry>
     </visual>
@@ -322,7 +322,7 @@
         <!-- <cylinder length="0.005" radius="${radius_rotor}"/> -->
         <!-- [m] -->
         <!-- <mesh filename="package://rotors_description/meshes/propeller_${direction}.dae" -->
-        <mesh filename="package://mavros_off_board/meshes/quad_f450/propeller_0.STL" scale="1 1 1"/>
+        <mesh filename="package://mavros_off_board/meshes/propeller_0.STL" scale="1 1 1"/>
         <!-- <box size="${2*radius_rotor} 0.01 0.005"/> -->
       </geometry>
     </visual>
@@ -464,7 +464,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="package://mavros_off_board/meshes/quad_f450/cam_link.STL"/>
+        <mesh filename="package://mavros_off_board/meshes/cam_link.STL"/>
       </geometry>
       <material name="red"/>
     </visual>

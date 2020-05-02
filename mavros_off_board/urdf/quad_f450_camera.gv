@@ -1,7 +1,7 @@
 digraph G {
 node [shape=box];
 "base_link" [label="base_link"];
-"/camera_red_iris_link" [label="/camera_red_iris_link"];
+"/camera_quad_f450_link" [label="/camera_quad_f450_link"];
 "/imu_link" [label="/imu_link"];
 "base_link_inertia" [label="base_link_inertia"];
 "rotor_0" [label="rotor_0"];
@@ -9,18 +9,18 @@ node [shape=box];
 "rotor_2" [label="rotor_2"];
 "rotor_3" [label="rotor_3"];
 node [shape=ellipse, color=blue, fontcolor=blue];
-"base_link" -> "/camera_red_iris_joint" [label="xyz: 0 0 -0.045 \nrpy: 0 1.5708 -0"]
-"/camera_red_iris_joint" -> "/camera_red_iris_link"
+"base_link" -> "/camera_quad_f450_joint" [label="xyz: 0 0 -0.013633 \nrpy: 0 1.5708 -1.5708"]
+"/camera_quad_f450_joint" -> "/camera_quad_f450_link"
 "base_link" -> "/imu_joint" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
 "/imu_joint" -> "/imu_link"
 "base_link" -> "base_joint" [label="xyz: 0 0 0 \nrpy: 0 -0 0"]
 "base_joint" -> "base_link_inertia"
-"base_link" -> "rotor_0_joint" [label="xyz: 0.13 -0.22 0.023 \nrpy: 0 -0 0"]
+"base_link" -> "rotor_0_joint" [label="xyz: 0.1589 -0.15909 0.062676 \nrpy: 0 0 -0.7854"]
 "rotor_0_joint" -> "rotor_0"
-"base_link" -> "rotor_1_joint" [label="xyz: -0.13 0.2 0.023 \nrpy: 0 -0 0"]
+"base_link" -> "rotor_1_joint" [label="xyz: -0.1589 0.15872 0.062676 \nrpy: 0 0 -0.7854"]
 "rotor_1_joint" -> "rotor_1"
-"base_link" -> "rotor_2_joint" [label="xyz: 0.13 0.22 0.023 \nrpy: 0 -0 0"]
+"base_link" -> "rotor_2_joint" [label="xyz: 0.15891 0.15872 0.062676 \nrpy: 0 -0 0.7854"]
 "rotor_2_joint" -> "rotor_2"
-"base_link" -> "rotor_3_joint" [label="xyz: -0.13 -0.2 0.023 \nrpy: 0 -0 0"]
+"base_link" -> "rotor_3_joint" [label="xyz: -0.15891 -0.15909 0.062676 \nrpy: 0 -0 0.7854"]
 "rotor_3_joint" -> "rotor_3"
 }
