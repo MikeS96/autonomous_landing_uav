@@ -1,8 +1,8 @@
 /**
- *  @file proportional_traslation.cpp
+ *  @file proportional_rotate.cpp
  *  @author Miguel Saavedra (miguel.saaruiz@gmail@gmail.com)
  *  @brief Proportional controller to move the vehicle towards the center of the 
- *  landing platform
+ *  landing platform and orientate it WRT x axis.
  *  @version 0.1
  *  @date 05-01-2020
  * 
@@ -27,7 +27,6 @@
  *  SOFTWARE.
  */
 
-
 #include <ros/ros.h>
 #include <stdio.h>
 #include <math.h>
@@ -35,12 +34,16 @@
 #include "object_detector/States.h" // Custom msgs of type States
 #include "drone_controller/Error.h" // Custom msgs of type Error
 
-#define FACTORX  0.00234375 // Vx proportional gain
-#define FACTORY  0.003125 // Vy proportional gain
-#define MAXV  0.75 // Max Vx and Vy speed
-#define MINV -0.75 // Min Vx and Vy speed
+#define FACTORX  0.0015625 // Vx proportional gain
+#define FACTORY  0.0020833 // Vy proportional gain
+#define FACTORTH  0.0055 // Theta proportional gain
+#define FACTORZ  0.05 // Descend Factor
+#define MAXV  0.5 // Max Vx and Vy speed
+#define MINV -0.5 // Min Vx and Vy speed
+#define MAXR  0.5 // Max Yaw rate
+#define MINR -0.5 // Min Yaw rate
 
-class Controller // Controller class
+class Controller //Controller class
 {
     private: 
         //Private class atributes
@@ -53,9 +56,9 @@ class Controller // Controller class
         float imageH; // Image Height
         float zini; // Initial height pos
 
-    public:
+    public: 
         // Public class attributes and methods
-        Controller(ros::NodeHandle ao_nh) : po_nh(ao_nh) 
+        Controller(ros::NodeHandle ao_nh) : po_nh(ao_nh)
         {
             // Publisher type mavros_msgs::PositionTarget, it publishes in /mavros/setpoint_raw/local topic
             pub = po_nh.advertise<mavros_msgs::PositionTarget>("/mavros/setpoint_raw/local",10) ; 
@@ -68,7 +71,7 @@ class Controller // Controller class
             imageH = 480/2;  // Setpoint in Y
         }
 
-        void controllerCallBack(const object_detector::States msg) //Callback para el subscriber
+        void controllerCallBack(const object_detector::States& msg) //Callback para el subscriber
         {
             // Time since last call
             // double timeBetweenMarkers = (ros::Time::now() - lastTime).toSec(); //The average publish time is of 10ms
@@ -77,30 +80,35 @@ class Controller // Controller class
             // Error Calculation between image and template's center
             float ErX = imageW - msg.Xc; // Error in X of the image
             float ErY = imageH - msg.Yc; //Error in Y of the image
+            float ErTheta = msg.Theta; // Error in Theta of the image
 
             // Publish the error
             drone_controller::Error er;
             er.errorX = ErX;
             er.errorY = ErY;
-            er.errorT = 0;
+            er.errorT = ErTheta;
             er.errorS = 0;
 
-            // Variables to be published (Initialized in 0)
+            //Variables to be published (Initialized in 0)
             float vx = 0;
             float vy = 0;
+            float vthe = 0;
 
-            // Calculate proportional gain for x and y
+            // Calculate Vx, Vy and Yaw rate
             vx = -1 * ErX * FACTORX; 
-            vy = ErY * FACTORY; 
+            vy = ErY * FACTORY;
+            vthe = -1 * ErTheta * FACTORTH; 
 
+            // Limit output 
             max_output(MAXV, MINV, vx); // Limit max Vx output
             max_output(MAXV, MINV, vy); // Limit max Vy output
+            max_output(MAXR, MINR, vthe); // Limit max Vtheta output
 
             // Position target object to publish
             mavros_msgs::PositionTarget pos;
 
             //FRAME_LOCAL_NED to move WRT to body_ned frame
-            pos.coordinate_frame = mavros_msgs::PositionTarget::FRAME_BODY_NED;  
+            pos.coordinate_frame = mavros_msgs::PositionTarget::FRAME_BODY_NED; 
 
             pos.header.stamp = ros::Time::now(); // Time header stamp
             pos.header.frame_id = "base_link"; // "base_link" frame to compute odom
@@ -108,13 +116,14 @@ class Controller // Controller class
             pos.position.z = 2.0;
             pos.velocity.x = vx;
             pos.velocity.y = vy;
-            pos.yaw_rate = 0;
+            pos.yaw_rate = vthe;
 
-            printf("Proportional Vx, Vy at (%f,%f) \n", vx, vy);
+            printf("Dany Vx, Vy, Vthe  values at (%f,%f,%f) \n", vx, vy, vthe);
             pub.publish(pos);
 
-            printf("Error at Vx and Vy (%f,%f) \n", ErX, ErY);
+            printf("Error at Vx, Vy and Theta (%f,%f,%f) \n", ErX, ErY, ErTheta);
             pub1.publish(er);
+
         }
 
         /**
@@ -136,15 +145,19 @@ class Controller // Controller class
                 out = min_v;
             }
         }
-};
+
+
+};//End of class 
 
 
 int main(int argc, char** argv)
 {   
 
-    ros::init(argc, argv, "p_traslation"); 
+    ros::init(argc, argv, "trejos_controller_node"); //Node name
     ros::NodeHandle n;
     Controller cont(n);
+
+
     ros::spin();
 
     return 0;

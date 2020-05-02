@@ -1,8 +1,7 @@
 /**
- *  @file proportional_traslation.cpp
+ *  @file proportional_controller.cpp
  *  @author Miguel Saavedra (miguel.saaruiz@gmail@gmail.com)
- *  @brief Proportional controller to move the vehicle towards the center of the 
- *  landing platform
+ *  @brief Proportional controller to land the vehicle on the landing pad
  *  @version 0.1
  *  @date 05-01-2020
  * 
@@ -27,20 +26,25 @@
  *  SOFTWARE.
  */
 
-
 #include <ros/ros.h>
 #include <stdio.h>
 #include <math.h>
 #include "mavros_msgs/PositionTarget.h" // Mavros topic to control vel and pos
 #include "object_detector/States.h" // Custom msgs of type States
 #include "drone_controller/Error.h" // Custom msgs of type Error
+#include <mavros_msgs/CommandTOL.h> // Service for landing
 
-#define FACTORX  0.00234375 // Vx proportional gain
-#define FACTORY  0.003125 // Vy proportional gain
-#define MAXV  0.75 // Max Vx and Vy speed
-#define MINV -0.75 // Min Vx and Vy speed
 
-class Controller // Controller class
+#define FACTOR  0.003125 // Vx and Vy proportional gain
+#define FACTORTH  0.0055 // Theta proportional gain
+#define FACTORZ  0.05 // Descend Factor
+#define MAXV  1 // Max Vx and Vy speed
+#define MINV -1 // Min Vx and Vy speed
+#define MAXR  0.5 // Max Yaw rate
+#define MINR -0.5 // Min Yaw rate
+
+
+class Controller 
 {
     private: 
         //Private class atributes
@@ -49,11 +53,13 @@ class Controller // Controller class
         ros::Publisher pub;
         ros::Publisher pub1;
         ros::Time lastTime;
+        ros::ServiceClient land_client;
+
         float imageW; // Image Width
         float imageH; // Image Height
         float zini; // Initial height pos
 
-    public:
+    public: 
         // Public class attributes and methods
         Controller(ros::NodeHandle ao_nh) : po_nh(ao_nh) 
         {
@@ -62,13 +68,17 @@ class Controller // Controller class
             // Publisher type drone_controller::Error, it publishes in /error topic
             pub1 = po_nh.advertise<drone_controller::Error>("/error",10) ;
             // Subscriber to /predicted_states topic from object_detector/Corners
-            sub = po_nh.subscribe("/predicted_states", 10, &Controller::controllerCallBack, this);
+            sub = po_nh.subscribe("/predicted_states", 10, &Controller::controllerCallBack, this); 
+            // Landing client
+            land_client = po_nh.serviceClient<mavros_msgs::CommandTOL>("mavros/cmd/land");
             lastTime = ros::Time::now(); // ROS time initialization throw ros time
             imageW = 640/2;  // Setpoint in X
             imageH = 480/2;  // Setpoint in Y
+            zini = 4.0; // Initial alttitude
         }
 
-        void controllerCallBack(const object_detector::States msg) //Callback para el subscriber
+        // Subscriber callback
+        void controllerCallBack(const object_detector::States& msg) 
         {
             // Time since last call
             // double timeBetweenMarkers = (ros::Time::now() - lastTime).toSec(); //The average publish time is of 10ms
@@ -77,24 +87,64 @@ class Controller // Controller class
             // Error Calculation between image and template's center
             float ErX = imageW - msg.Xc; // Error in X of the image
             float ErY = imageH - msg.Yc; //Error in Y of the image
+            float ErTheta = msg.Theta; // Error in Theta of the image
+            float ErZ = abs(msg.W - msg.H); //Error in W and H of the images
 
             // Publish the error
             drone_controller::Error er;
             er.errorX = ErX;
             er.errorY = ErY;
-            er.errorT = 0;
-            er.errorS = 0;
+            er.errorT = ErTheta;
+            er.errorS = ErZ;
 
             // Variables to be published (Initialized in 0)
             float vx = 0;
             float vy = 0;
+            float vthe = 0;
+            float zpos = 0;	
 
-            // Calculate proportional gain for x and y
-            vx = -1 * ErX * FACTORX; 
-            vy = ErY * FACTORY; 
+            // If the erroe between width and height is less than 3 pixels
+            if(ErZ < 3)
+            {
+                zpos =  zini -  FACTORZ; // Descend Z based on the factor 
+            }
+            else{
+                zpos = zini; // If there is more than 3 pixels of error, hold pos
+            }
 
+            // Drone service for automatic langind when it reaches an specific altitude
+            if(zpos <= 0.9)
+            { 
+                mavros_msgs::CommandTOL land_cmd; // Set all the descend parameters to Zero
+                land_cmd.request.yaw = 0;
+                land_cmd.request.latitude = 0;
+                land_cmd.request.longitude = 0;
+                land_cmd.request.altitude = 0;
+
+                // When it lands, everything goes to zero
+                if (!(land_client.call(land_cmd) && land_cmd.response.success))
+                {   
+                    // Publish the service of landing
+                    ROS_INFO("Landing");                  
+                    // Print final Error
+                    printf("Error at Vx, Vy, Theta and Z are (%f,%f,%f,%f) \n", ErX, ErY, ErTheta, ErZ);
+                    pub1.publish(er);
+                    ros::shutdown(); // Shutdowm the node
+                }
+            }
+
+            // Update vehicle's position
+            zini = zpos; 
+
+            // Calculate proportional gain for each axis
+            vx = -1 * ErX * FACTOR; 
+            vy = ErY * FACTOR; 
+            vthe = -1 * ErTheta * FACTORTH;
+
+            // Limit output 
             max_output(MAXV, MINV, vx); // Limit max Vx output
             max_output(MAXV, MINV, vy); // Limit max Vy output
+            max_output(MAXR, MINR, vthe); // Limit max Vtheta output
 
             // Position target object to publish
             mavros_msgs::PositionTarget pos;
@@ -105,15 +155,15 @@ class Controller // Controller class
             pos.header.stamp = ros::Time::now(); // Time header stamp
             pos.header.frame_id = "base_link"; // "base_link" frame to compute odom
             pos.type_mask = 1987; // Mask for Vx, Vy, Z pos and Yaw rate
-            pos.position.z = 2.0;
+            pos.position.z = zpos;
             pos.velocity.x = vx;
             pos.velocity.y = vy;
-            pos.yaw_rate = 0;
+            pos.yaw_rate = vthe;
 
-            printf("Proportional Vx, Vy at (%f,%f) \n", vx, vy);
+            printf("Proportional Vx, Vy, Vthe and Zpos values at (%f,%f,%f,%f) \n", vx, vy, vthe, zpos);
             pub.publish(pos);
 
-            printf("Error at Vx and Vy (%f,%f) \n", ErX, ErY);
+            printf("Error at Vx, Vy, Theta and Z are (%f,%f,%f,%f) \n", ErX, ErY, ErTheta, ErZ);
             pub1.publish(er);
         }
 
@@ -142,11 +192,12 @@ class Controller // Controller class
 int main(int argc, char** argv)
 {   
 
-    ros::init(argc, argv, "p_traslation"); 
+    ros::init(argc, argv, "p_controller"); 
     ros::NodeHandle n;
     Controller cont(n);
     ros::spin();
 
     return 0;
 }
+
 
