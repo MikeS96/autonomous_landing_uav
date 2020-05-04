@@ -111,3 +111,15 @@ This work used the find_object_2d package developed by introlab, the citation ca
 
 This work was done as BEng degree project entitled "Autonomous landing system for a UAV on a ground vehicle" in "Universidad Autonóma de Occidente", Colombia. 
 
+## Citation
+
+If you want to use this repo, please cite as.
+
+> @misc{MikeS96,
+  author = {Saavedra-Ruiz M, Pinto A, Romero-Cano V},
+  title = {Autonomous landing system for a UAV on a ground vehicle},
+  year = {2019},
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  howpublished = {\url{https://github.com/MikeS96/autonomous_landing_uav}},
+}
