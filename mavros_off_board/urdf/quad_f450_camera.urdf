@@ -14,6 +14,7 @@
   <!-- Macro to add the controller interface. -->
   <!-- Macro to add the gps_plugin. -->
   <!-- Macro to add the magnetometer_plugin. -->
+  <!-- Macro to add Ground Truth plugin -->
   <!-- Macro to add the barometer_plugin. -->
   <!-- Macro to add the mavlink interface. -->
   <!-- Macro to add the mavlink interface for a fixed-wing model. -->
@@ -390,6 +391,15 @@
       <robotNamespace></robotNamespace>
       <pubRate>50</pubRate>
       <baroTopic>/baro</baroTopic>
+    </plugin>
+  </gazebo>
+  <!-- Instantiate GroundTruth plugin. -->
+  <gazebo>
+    <plugin filename="libgazebo_ros_p3d.so" name="ground_truth">
+      <frameName>map</frameName>
+      <bodyName>base_link</bodyName>
+      <topicName>/odom</topicName>
+      <updateRate>30</updateRate>
     </plugin>
   </gazebo>
   <!-- Instantiate mavlink telemetry interface. -->

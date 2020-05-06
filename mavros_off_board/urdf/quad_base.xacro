@@ -76,6 +76,14 @@
     >
   </xacro:barometer_plugin_macro>
 
+  <!-- Instantiate GroundTruth plugin. -->
+  <xacro:ground_truth_plugin_macro
+    base="base_link"
+    pub_rate="30"
+    groundt_topic="/odom"
+    >
+  </xacro:ground_truth_plugin_macro>
+
   <xacro:if value="$(arg enable_mavlink_interface)">
   <!-- Instantiate mavlink telemetry interface. -->
   <xacro:mavlink_interface_macro

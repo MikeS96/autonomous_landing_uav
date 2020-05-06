@@ -152,6 +152,18 @@
     </gazebo>
   </xacro:macro>
 
+  <!-- Macro to add Ground Truth plugin -->
+  <xacro:macro name="ground_truth_plugin_macro" params="base pub_rate groundt_topic">
+    <gazebo>
+      <plugin name="ground_truth" filename="libgazebo_ros_p3d.so">
+        <frameName>map</frameName>
+		<bodyName>${base}</bodyName>
+		<topicName>${groundt_topic}</topicName>
+		<updateRate>${pub_rate}</updateRate>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+
   <!-- Macro to add the barometer_plugin. -->
   <xacro:macro name="barometer_plugin_macro" params="namespace pub_rate baro_topic">
     <gazebo>

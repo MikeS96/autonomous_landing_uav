@@ -418,8 +418,8 @@
           </script>
         </material>
       </visual>
-	  <gravity>1</gravity>
-	  <velocity_decay/>
+    <gravity>1</gravity>
+    <velocity_decay/>
       <self_collide>0</self_collide>
       <sensor name="camera_imu" type="imu">
         <always_on>1</always_on>
@@ -642,7 +642,7 @@
       <use_tcp>1</use_tcp>
       <vehicle_is_tailsitter>0</vehicle_is_tailsitter>
       <send_vision_estimation>1</send_vision_estimation>
-      <send_odometry>0</send_odometry>
+      <send_odometry>1</send_odometry>
       <motorSpeedCommandPubTopic>/gazebo/command/motor_speed</motorSpeedCommandPubTopic>
       <control_channels>
         <channel name='rotor1'>
@@ -698,6 +698,14 @@
       <accelerometerRandomWalk>0.006</accelerometerRandomWalk>
       <accelerometerBiasCorrelationTime>300.0</accelerometerBiasCorrelationTime>
       <accelerometerTurnOnBiasSigma>0.196</accelerometerTurnOnBiasSigma>
+    </plugin>
+
+    <!--Ground Truth-->
+    <plugin name="ground_truth" filename="libgazebo_ros_p3d.so">
+      <frameName>map</frameName>
+      <bodyName>base_link</bodyName>
+      <topicName>/odom</topicName>
+      <updateRate>30.0</updateRate>
     </plugin>
 
   </model>
