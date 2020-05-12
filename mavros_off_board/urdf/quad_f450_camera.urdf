@@ -400,6 +400,8 @@
       <bodyName>base_link</bodyName>
       <topicName>/odom</topicName>
       <updateRate>30</updateRate>
+      <xyzOffset>0 0 -0.1975016</xyzOffset>
+      <rpyOffset>0 0 0</rpyOffset>
     </plugin>
   </gazebo>
   <!-- Instantiate mavlink telemetry interface. -->
