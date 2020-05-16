@@ -55,7 +55,7 @@
         <node name="$(arg vehicle)_$(arg ID)_spawn" output="screen" pkg="gazebo_ros" type="spawn_model" args="-urdf -param rotors_description -model $(arg vehicle)_$(arg ID) -package_to_model -x $(arg x) -y $(arg y) -z $(arg z) -R $(arg R) -P $(arg P) -Y $(arg Y)"/>
 
     	<!-- MAVROS -->
-        <include file="$(find airflyd)/launch/px4.launch">
+        <include file="$(find mavros_off_board)/launch/px4_modify.launch">
             <!-- GCS link is provided by SITL -->
             <arg name="gcs_url" value=""/>
             <arg name="fcu_url" value="$(arg fcu_url)"/>
