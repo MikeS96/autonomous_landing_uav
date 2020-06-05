@@ -30,7 +30,7 @@ def depth_callback(msg_depth):
     except CvBridgeError, e:
         print(e)
     else:
-        # Save your OpenCV2 image as a jpeg 
+        # Save your OpenCV2 image as a jpeg ros rosbag play -r 0.2 take_4.bag
         cv_depth_array = np.array(cv2_depth, dtype = np.dtype('f8'))
         time = msg_depth.header.stamp
         print('saving depth image at ' + 'secs_'+str(time.secs)+'nsecs_'+str(time.nsecs))
