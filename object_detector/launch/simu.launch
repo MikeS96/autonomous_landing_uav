@@ -9,7 +9,7 @@
     <node pkg="find_object_2d" type="find_object_2d" name="find_object_2d" output="screen">
         <remap from="image" to="/quad_f450_camera/camera_link/raw_image"/>
         <param name="gui" value="true"/>
-        <param name="objects_path" value="/home/sherlock/bagfiles/Templates/simu"/>
+        <param name="objects_path" value="/home/sherlock/Documents/Templates/simulation"/>
     </node>
      
     <node pkg="object_detector" type="corners_detector" name="corners_detected">
