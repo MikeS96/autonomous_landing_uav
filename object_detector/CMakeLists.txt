@@ -20,17 +20,16 @@ find_package(catkin REQUIRED COMPONENTS
 
 ## http://www.briangoldfain.com/2013/02/using-qt-in-a-ros-catkin-package/
 ## https://answers.ros.org/question/104666/how-to-use-qt-libraries-in-ros/
+
 find_package(Qt4 REQUIRED COMPONENTS QtCore QtGui)
 
 include(${QT_USE_FILE})
 ADD_DEFINITIONS(${QT_DEFINITIONS})
 
-##
-
 
 find_package(Eigen3 REQUIRED) #Requiero Eigen 3
 
-find_package( OpenCV REQUIRED ) #Requiero a OpenCV
+find_package(OpenCV 3.4 REQUIRED) #Requiero a OpenCV
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -138,8 +137,8 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
   ${EIGEN3_INCLUDE_DIR}  # include eigen 3
   ${OpenCV_INCLUDE_DIRS} # include Open CV
-  
 )
+
 
 ## Declare a C++ library
 # add_library(${PROJECT_NAME}
