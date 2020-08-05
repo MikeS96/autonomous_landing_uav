@@ -31,12 +31,12 @@ In the package *mavros_off_board* are the launch files, world file, description 
 
 ## Installation 
 
-To use these packages, [install OpenCV ](https://www.pyimagesearch.com/2016/10/24/ubuntu-16-04-how-to-install-opencv/), [ROS kinetic](http://wiki.ros.org/kinetic/Installation), [Gazebo 9](http://gazebosim.org/tutorials?tut=install_ubuntu) and the [SITL (master) ](https://dev.px4.io/master/en/simulation/) provided by PX4 in Ubuntu 16.04.
+To use these packages, [install OpenCV ](https://www.pyimagesearch.com/2016/10/24/ubuntu-16-04-how-to-install-opencv/), [ROS melodic](http://wiki.ros.org/melodic/Installation), [Gazebo 9](http://gazebosim.org/tutorials?tut=install_ubuntu) and the [SITL (master) ](https://dev.px4.io/master/en/simulation/) provided by PX4 in Ubuntu 16.04.
 
 This project has dependencies in other ROS packages which are shown below. To install [mavros](http://wiki.ros.org/mavros) and [find_object_2d](http://wiki.ros.org/find_object_2d) ROS packages use the following commands.
 
-    $ sudo apt-get install ros-kinetic-mavros ros-kinetic-mavros-extras
-    $ sudo apt-get install ros-kinetic-find-object-2d
+    $ sudo apt-get install ros-melodic-mavros ros-melodic-mavros-extras
+    $ sudo apt-get install ros-melodic-find-object-2d
     
 Once the PX4 SITL is installed, create your own model of the F450 model with the files provided in `mavros_off_board/urdf` and `mavros_off_board/sdf`. The instruction and steps are explained in this [thread](https://discuss.px4.io/t/create-custom-model-for-sitl/6700/3). The steps are listed below.
 
