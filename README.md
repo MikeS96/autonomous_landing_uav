@@ -43,7 +43,7 @@ Once the PX4 SITL is installed, create your own model of the F450 model with the
 1.  Create a folder under `Tools/sitl_gazebo/models` for the F450 model called *quad_f450_camera*
 2.  Create the following files under `Tools/sitl_gazebo/models/quad_f450_camera`: model.config and quad_f450_camera.sdf (The sdf file and model.config is located  in `mavros_off_board/sdf`). Additionally, create the folder *meshes* and *urdf* and add the files in  `mavros_off_board/urdf`,  `mavros_off_board/meshes`
 3.  Create a world file in `Tools/sitl_gazebo/worlds` called grass_pad.world (file located  in `mavros_off_board/worlds`)
-4.  Create an airframe file under `ROMFS/px4fmu_common/init.d-posix` (This can be based off the iris or solo airframe files), give it a number (for example 1076) and name it 1076_quad_f450_camera
+4.  Create an airframe file under `ROMFS/px4fmu_common/init.d-posix/airframes` (This can be based off the iris or solo airframe files), give it a number (for example 1076) and name it 1076_quad_f450_camera
 5.  Add the airframe name (quad_f450_camera) to the file `platforms/posix/cmake/sitl_target.cmake` in the command _set(models …_
 
 Finally, add the three ROS packages to your catkin_ws and compile the project with `catkin_make`.
