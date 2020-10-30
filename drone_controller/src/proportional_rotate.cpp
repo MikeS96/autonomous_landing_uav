@@ -95,9 +95,9 @@ class Controller //Controller class
             float vthe = 0;
 
             // Calculate Vx, Vy and Yaw rate
-            vx = -1 * ErX * FACTORX; 
-            vy = ErY * FACTORY;
-            vthe = -1 * ErTheta * FACTORTH; 
+            vy = ErX * FACTORX; 
+            vx = ErY * FACTORY;
+            vthe = ErTheta * FACTORTH; 
 
             // Limit output 
             max_output(MAXV, MINV, vx); // Limit max Vx output
