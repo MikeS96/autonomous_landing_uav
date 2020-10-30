@@ -90,8 +90,8 @@ class Controller // Controller class
             float vy = 0;
 
             // Calculate proportional gain for x and y
-            vx = -1 * ErX * FACTORX; 
-            vy = ErY * FACTORY; 
+            vy = ErX * FACTORX; 
+            vx = ErY * FACTORY; 
 
             max_output(MAXV, MINV, vx); // Limit max Vx output
             max_output(MAXV, MINV, vy); // Limit max Vy output
