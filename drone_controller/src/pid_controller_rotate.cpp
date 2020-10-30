@@ -98,8 +98,8 @@ class Controller
             lastTime = ros::Time::now();
 
             // Compute controller output for each axis
-            Vx = (float) -1 * pidx->calculate(imageW, msg.Xc, timeBetweenMarkers); // Setpoint, Process Variable, Sample time for Vx
-            Vy = (float) pidy->calculate(imageH, msg.Yc, timeBetweenMarkers); 
+            Vy = (float) pidx->calculate(imageW, msg.Xc, timeBetweenMarkers); // Setpoint, Process Variable, Sample time for Vx
+            Vx = (float) pidy->calculate(imageH, msg.Yc, timeBetweenMarkers); 
             Vthe = (float) pidth->calculate(0, msg.Theta, timeBetweenMarkers);
 
             // Position target object to publish
