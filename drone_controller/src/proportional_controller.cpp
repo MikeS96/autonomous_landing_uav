@@ -137,9 +137,9 @@ class Controller
             zini = zpos; 
 
             // Calculate proportional gain for each axis
-            vx = -1 * ErX * FACTOR; 
-            vy = ErY * FACTOR; 
-            vthe = -1 * ErTheta * FACTORTH;
+            vy = ErX * FACTOR; 
+            vx = ErY * FACTOR; 
+            vthe = ErTheta * FACTORTH;
 
             // Limit output 
             max_output(MAXV, MINV, vx); // Limit max Vx output
