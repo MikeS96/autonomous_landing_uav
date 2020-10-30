@@ -35,10 +35,6 @@
 #include "drone_controller/Error.h" // Custom msgs of type Error
 #include "drone_controller/pid.h"
 
-
-PID pidx = PID(0.75, -0.75, 0.00234375, 0.00046875, 0.0); //max, min, kp, kd, ki (Max = 1m/s, Min = 1m/s, 
-PID pidy = PID(0.75, -0.75, 0.003125, 0.000625, 0.0);
-
 class Controller
 {
 	private: 
@@ -95,8 +91,8 @@ class Controller
 			lastTime = ros::Time::now();
 
 			// Compute controller output for each axis
-			Vx = (float) -1 * pidx->calculate(imageW, msg.Xc, timeBetweenMarkers); // Setpoint, Process Variable, Sample time for Vx
-			Vy = (float) pidy->calculate(imageH, msg.Yc, timeBetweenMarkers); 
+			Vy = (float) pidx->calculate(imageW, msg.Xc, timeBetweenMarkers); // Setpoint, Process Variable, Sample time for Vx
+			Vx = (float) pidy->calculate(imageH, msg.Yc, timeBetweenMarkers); 
 
 			// Position target object to publish
             mavros_msgs::PositionTarget pos;
