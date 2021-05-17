@@ -17,6 +17,12 @@ The autonomous landing system has been tested in Simulation with Gazebo and with
 
 This system can be used in more complex tasks where the landing phase wants to be automated. Precision agriculture, Patrolling and building inspection are just few examples where a system like this might be used to land the vehicle.
 
+The following diagram illustrates  the  general  workflow  of  the system. First the homography matrix is computed between the current image frame and the predefined template, using  a  feature-based  detector.  Then,  the  homography  matrix is used to compute the corners and the centroid of the object.  These  points  are  then  passed to  a  Kalman  filter  estimation  module.  Finally,  the  Kalman filter  estimations  are  used  to  track  the  template  in  the  image frame, and passed as input for a set of three PID-based controllers that perform the safe landing of the vehicle
+
+<div  align="center">
+<img  src="./images/pipeline.png">
+</div>
+
 There are three main packages that compose this project, these are:
 
  1. mavros_off_board
@@ -29,87 +35,16 @@ In the package *mavros_off_board* are the launch files, world file, description 
 <img  src="./images/uav.png" width="330">
 </div>
 
-## Installation 
+## Setting up the project
 
-To use these packages, [install OpenCV ](https://www.pyimagesearch.com/2016/10/24/ubuntu-16-04-how-to-install-opencv/), [ROS melodic](http://wiki.ros.org/melodic/Installation), [Gazebo 9](http://gazebosim.org/tutorials?tut=install_ubuntu) and the [SITL (master) ](https://dev.px4.io/master/en/simulation/) provided by PX4 in Ubuntu 16.04.
+1. [Installation and environment configuration.](/Installation.md)
 
-This project has dependencies in other ROS packages which are shown below. To install [mavros](http://wiki.ros.org/mavros) and [find_object_2d](http://wiki.ros.org/find_object_2d) ROS packages use the following commands.
+2. [Testing the SITL.](/Testing.md)
 
-    $ sudo apt-get install ros-melodic-mavros ros-melodic-mavros-extras
-    $ sudo apt-get install ros-melodic-find-object-2d
-    
-Once the PX4 SITL is installed, create your own model of the F450 model with the files provided in `mavros_off_board/urdf` and `mavros_off_board/sdf`. The instruction and steps are explained in this [thread](https://discuss.px4.io/t/create-custom-model-for-sitl/6700/3). The steps are listed below.
+3. [Usage and deployment](/Usage.md)
 
-1.  Create a folder under `Tools/sitl_gazebo/models` for the F450 model called *quad_f450_camera*
-2.  Create the following files under `Tools/sitl_gazebo/models/quad_f450_camera`: model.config and quad_f450_camera.sdf (The sdf file and model.config is located  in `mavros_off_board/sdf`). Additionally, create the folder *meshes* and *urdf* and add the files in  `mavros_off_board/urdf`,  `mavros_off_board/meshes`
-3.  Create a world file in `Tools/sitl_gazebo/worlds` called grass_pad.world (file located  in `mavros_off_board/worlds`)
-4.  Create an airframe file under `ROMFS/px4fmu_common/init.d-posix/airframes` (This can be based off the iris or solo airframe files), give it a number (for example 1076) and name it 1076_quad_f450_camera
-5.  Add the airframe name (quad_f450_camera) to the file `platforms/posix/cmake/sitl_target.cmake` in the command _set(models …_
 
-Finally, add the three ROS packages to your catkin_ws and compile the project with `catkin_make`.
-
-## Usage
-The system has four launch files embedded in *mavros_off_board* and these are used to launch the vehicle, the functionality of each launcher is:
-
- - **posix_sitl.launch** It launches PX4 SITL in Gazebo
- - **mavros_posix_sitl.launch** This launch file launches Mavros, PX4 SITL and Gazebo. This launch file allows the control of the vehicle with ROS. The model launched is in sdf format.
- - **mavros_rviz.launch** This launch file is only for visualization purpose and shows the vehicle in Gazebo and Rviz. The model launched is in urdf format.
- - **urdf_launcher.launch** This launch file launches Mavros, PX4 SITL, Rviz and Gazebo. This launch file allows the control of the vehicle with ROS. The model launched is in xacro format.
-
-The frames and TF of the vehicle in Rviz are shown in the next image.
-
-<div  align="center">
-<img src="./images/rviz_gif.gif" width="480" />
-</div>
-
-Use the launch files based on your own needs. If you need only simulate the vehicle use **mavros_posix_sitl.launch**, but if visualization in Rviz is also needed use **urdf_launcher.launch**. 
-
-With the package **mavros_off_board**  launch the system in a simulated environment 
-
-    cd Firmware  
-    DONT_RUN=1 make px4_sitl_default gazebo  
-    source ~/catkin_ws/devel/setup.bash  
-    source Tools/setup_gazebo.bash $(pwd) $(pwd)/build/px4_sitl_default  
-    export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:$(pwd)  
-    export ROS_PACKAGE_PATH=$ROS_PACKAGE_PATH:$(pwd)/Tools/sitl_gazebo
-    roslaunch mavros_off_board mavros_posix_sitl.launch
-
-This will deploy the Gazebo world created with the UAV, allowing further iteration of the vehicle.
-
-Once the simulation is running,  Takeoff the vehicle and start its teleoperation with
-
-    $ rosrun mavros_off_board offb_node
-    $ rosrun mavros_off_board teleop_node_pos
-
-Move the vehicle with the keyboard along the simulation space and locate it above the landing pad.
-
-To use the detection pipeline in **object_detector** use 
-
-    $ roslaunch object_detector simu.launch
-
-This will start the detection module of the system and track the landing platform as shown by the image below.
- 
- <div  align="center">
-<img  src="./images/kf.png" width="330">
-</div>
-
-To land the vehicle use the **drone_controller** package. The process variable of the controller is the output of the detection pipeline. Do not use this package without the detector.  
-
-    $ rosrun drone_controller pid_controller_final 
-
-The variables controlled are velocity in X and Y, the yaw rate and the position in Z of the quad-rotor.
-
-This work used the find_object_2d package developed by introlab, the citation can be seen below
-
-> @misc{labbe11findobject,
-   Author = {{Labb\'{e}, M.}},
-   Howpublished = {\url{http://introlab.github.io/find-object}},
-   Note = {accessed 2019-04-02},
-   Title = {{Find-Object}},
-   Year = 2011
-}
-
-This work was done as BEng degree project entitled "Autonomous landing system for a UAV on a ground vehicle" in "Universidad Autonóma de Occidente", Colombia. 
+**Note:** This work was done as BEng degree project entitled "Autonomous landing system for a UAV on a ground vehicle" in "Universidad Autonóma de Occidente", Colombia. 
 
 ## Citation
 
@@ -122,4 +57,16 @@ If you want to use this repo, please cite as.
   publisher = {GitHub},
   journal = {GitHub repository},
   howpublished = {\url{https://github.com/MikeS96/autonomous_landing_uav}},
+}
+
+## Bibliography
+
+This work used the find_object_2d package developed by introlab, the citation can be seen below
+
+> @misc{labbe11findobject,
+   Author = {{Labb\'{e}, M.}},
+   Howpublished = {\url{http://introlab.github.io/find-object}},
+   Note = {accessed 2019-04-02},
+   Title = {{Find-Object}},
+   Year = 2011
 }

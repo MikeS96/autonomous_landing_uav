@@ -1,6 +1,6 @@
 ﻿
 
-# Installation
+# Installation and environment configuration
 
 This short tutorial is intended to be used as the installation guide for the development tool-chain of the SITL provided by PX4. The information provided here is based on the [official documentation](https://dev.px4.io/v1.9.0/en/setup/dev_env_linux.html) and was created with the version `1.11`.
 
@@ -79,5 +79,24 @@ sudo apt-get install ros-kinetic-mavros ros-kinetic-mavros-extras
 wget https://raw.githubusercontent.com/mavlink/mavros/master/mavros/scripts/install_geographiclib_datasets.sh
 sudo bash ./install_geographiclib_datasets.sh
 ```
-At this point everything should be up and running to start playing with the SITL of PX4. 
 
+This project has dependencies in other ROS packages which are shown below. To install [find_object_2d](http://wiki.ros.org/find_object_2d) and [vision_opencv](http://wiki.ros.org/vision_opencv) ROS packages using the following commands.
+
+```
+sudo apt-get install ros-melodic-find-object-2d
+sudo apt-get install ros-melodic-vision-opencv
+```
+
+### Models configuration
+
+Once the PX4 SITL is installed, create your own model of the F450 model with the files provided in `mavros_off_board/urdf` and `mavros_off_board/sdf`. The instruction and steps are explained in this [thread](https://discuss.px4.io/t/create-custom-model-for-sitl/6700/3). The steps are listed below.
+
+1.  Create a folder under `Tools/sitl_gazebo/models` for the F450 model called *quad_f450_camera*
+2.  Create the following files under `Tools/sitl_gazebo/models/quad_f450_camera`: model.config and quad_f450_camera.sdf (The sdf file and model.config is located  in `mavros_off_board/sdf`). Additionally, create the folder *meshes* and *urdf* and add the files in  `mavros_off_board/urdf`,  `mavros_off_board/meshes`
+3.  Create a world file in `Tools/sitl_gazebo/worlds` called grass_pad.world (file located  in `mavros_off_board/worlds`)
+4.  Create an airframe file under `ROMFS/px4fmu_common/init.d-posix/airframes` (This can be based off the iris or solo airframe files), give it a number (for example 1076) and name it 1076_quad_f450_camera
+5.  Add the airframe name (quad_f450_camera) to the file `platforms/posix/cmake/sitl_target.cmake` in the command _set(models …_
+
+Finally, add the three ROS packages to your catkin_ws and compile the project with `catkin_make`.
+
+At this point everything should be up and running to start playing with the SITL of PX4. 
