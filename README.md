@@ -43,6 +43,8 @@ In the package *mavros_off_board* are the launch files, world file, description 
 
 3. [Usage and deployment](/Usage.md)
 
+The repository containing the evaluation of this work can be found [here](https://github.com/apinto25/autonomous_landing_data_analysis).
+
 
 **Note:** This work was done as BEng degree project entitled "Autonomous landing system for a UAV on a ground vehicle" in "Universidad Autonóma de Occidente", Colombia. 
 
