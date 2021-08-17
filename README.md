@@ -72,3 +72,17 @@ This work used the find_object_2d package developed by introlab, the citation ca
    Title = {{Find-Object}},
    Year = 2011
 }
+
+### Citation
+
+If you use this code, please cite our paper:
+
+```
+@misc{saavedraruiz2021monocular,
+      title={Monocular visual autonomous landing system for quadcopter drones using software in the loop}, 
+      author={Miguel Saavedra-Ruiz and Ana Mario Pinto-Vargas and Victor Romero-Cano},
+      year={2021},
+      eprint={2108.06616},
+      archivePrefix={arXiv},
+      primaryClass={cs.RO}
+}
