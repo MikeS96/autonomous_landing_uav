@@ -52,31 +52,6 @@ The repository containing the evaluation of this work can be found [here](https:
 
 If you want to use this repo, please cite as.
 
-> @misc{MikeS96,
-  author = {Saavedra-Ruiz M, Pinto A, Romero-Cano V},
-  title = {Autonomous landing system for a UAV on a ground vehicle},
-  year = {2019},
-  publisher = {GitHub},
-  journal = {GitHub repository},
-  howpublished = {\url{https://github.com/MikeS96/autonomous_landing_uav}},
-}
-
-## Bibliography
-
-This work used the find_object_2d package developed by introlab, the citation can be seen below
-
-> @misc{labbe11findobject,
-   Author = {{Labb\'{e}, M.}},
-   Howpublished = {\url{http://introlab.github.io/find-object}},
-   Note = {accessed 2019-04-02},
-   Title = {{Find-Object}},
-   Year = 2011
-}
-
-### Citation
-
-If you use this code, please cite our paper:
-
 ```
 @misc{saavedraruiz2021monocular,
       title={Monocular visual autonomous landing system for quadcopter drones using software in the loop}, 
@@ -86,3 +61,18 @@ If you use this code, please cite our paper:
       archivePrefix={arXiv},
       primaryClass={cs.RO}
 }
+```
+
+## Bibliography
+
+This work used the find_object_2d package developed by introlab, the citation can be seen below
+
+```
+@misc{labbe11findobject,
+   Author = {{Labb\'{e}, M.}},
+   Howpublished = {\url{http://introlab.github.io/find-object}},
+   Note = {accessed 2019-04-02},
+   Title = {{Find-Object}},
+   Year = 2011
+}
+```
