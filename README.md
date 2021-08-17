@@ -50,7 +50,7 @@ The repository containing the evaluation of this work can be found [here](https:
 
 ## Citation
 
-If you want to use this repo, please cite as.
+If you use this code, please cite our paper:
 
 ```
 @misc{saavedraruiz2021monocular,
