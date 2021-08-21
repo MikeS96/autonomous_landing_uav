@@ -13,12 +13,12 @@ authors:
   orcid: "https://orcid.org/0000-0003-2910-5116"
 title: "Monocular visual autonomous landing system for quadcopter drones using software in the loop"
 version: 1.0.0
+type: software
+date-released: 2021-08-21
+license: MIT
+repository-code: "https://github.com/MikeS96/autonomous_landing_uav"
 preferred-citation:
   identifiers:
     - type: other
       value: "arXiv:2108.06616"
       description: The ArXiv preprint of the paper
-type: software
-date-released: 2021-08-21
-license: MIT
-repository-code: "https://github.com/MikeS96/autonomous_landing_uav"
