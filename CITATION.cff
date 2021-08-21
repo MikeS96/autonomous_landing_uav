@@ -16,3 +16,29 @@ doi: 10.5281/zenodo.5230568
 date-released: 2021-08-21
 license: MIT
 repository-code: "https://github.com/MikeS96/autonomous_landing_uav"
+references:
+  - scope: "Cite this paper when you use the software"
+    type: article
+    authors: 
+      -
+        affiliation: "Technical University of Munich"
+        family-names: "Rodenberg"
+        given-names: "Benjamin"
+        orcid: "https://orcid.org/0000-0002-3116-0133"
+      -
+        affiliation: "University Stuttgart"
+        family-names: "Desai"
+        given-names: "Ishaan"
+        orcid: "https://orcid.org/0000-0002-2552-7509"
+      -
+        family-names: "Hertrich"
+        given-names: "Richard"
+        orcid: "https://orcid.org/0000-0003-1722-2841"
+    abstract: "test."
+    year: 2021
+    month: 03
+    url: "https://arxiv.org/abs/2108.06616"
+    identifiers:
+      - type: "other"
+        value: "arXiv:2108.06616"
+    title: "Monocular visual autonomous landing system for quadcopter drones using software in the loop"
