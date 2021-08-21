@@ -16,8 +16,3 @@ doi: 10.5281/zenodo.5230568
 date-released: 2021-08-21
 license: MIT
 repository-code: "https://github.com/MikeS96/autonomous_landing_uav"
-preferred-citation:
-  identifiers:
-    - type: other
-      value: "arXiv:2108.06616"
-      description: The ArXiv preprint of the paper
