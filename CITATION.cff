@@ -30,8 +30,4 @@ preferred-citation:
     doi: "10.5281/zenodo.5230568"
     year: 2021
     month: 08
-    identifiers:
-      - type: other
-      value: "arXiv:2108.06616"
-      description: The ArXiv preprint of the paper
     title: "Monocular visual autonomous landing system for quadcopter drones using software in the loop"
