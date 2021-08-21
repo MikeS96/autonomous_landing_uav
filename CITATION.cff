@@ -4,16 +4,15 @@ authors:
 - family-names: "Saavedra-Ruiz"
   given-names: "Miguel"
   orcid: "https://orcid.org/0000-0002-1599-4357"
-  website: "https://mikes96.github.io/"
 - family-names: "Pinto-Vargas"
   given-names: "Ana Maria"
-  orcid: "https://orcid.org/0000-0000-0000-0000"
 - family-names: "Romero-Cano"
   given-names: "Victor"
   orcid: "https://orcid.org/0000-0003-2910-5116"
 title: "Monocular visual autonomous landing system for quadcopter drones using software in the loop"
-version: 1.0.0
+version: 2.1.0
 type: software
+doi: 10.5281/zenodo.5230568
 date-released: 2021-08-21
 license: MIT
 repository-code: "https://github.com/MikeS96/autonomous_landing_uav"
