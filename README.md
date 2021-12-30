@@ -53,13 +53,15 @@ The repository containing the evaluation of this work can be found [here](https:
 If you use this code, please cite our [paper](https://arxiv.org/abs/2108.06616) as:
 
 ```
-@misc{saavedraruiz2021monocular,
-      title={Monocular visual autonomous landing system for quadcopter drones using software in the loop}, 
-      author={Miguel Saavedra-Ruiz and Ana Mario Pinto-Vargas and Victor Romero-Cano},
-      year={2021},
-      eprint={2108.06616},
-      archivePrefix={arXiv},
-      primaryClass={cs.RO}
+@article{alsuav,
+	title        = {Monocular Visual Autonomous Landing System for Quadcopter Drones using Software in the Loop},
+	author       = {Saavedra-Ruiz, Miguel and Pinto-Vargas, Ana Maria and Romero-Cano, Victor},
+	year         = 2021,
+	journal      = {IEEE Aerospace and Electronic Systems Magazine},
+	volume       = {},
+	number       = {},
+	pages        = {1--1},
+	doi          = {10.1109/MAES.2021.3115208}
 }
 ```
 
