@@ -38,7 +38,8 @@ The drone can be flown by typing:
 ```bash
 pxh> commander takeoff
 ```
-From now on you can continue following the steps provided [here](https://github.com/MikeS96/autonomous_landing_uav).
+From now on you can continue following the steps provided [here](https://github.
+com/MikeS96/autonomous_landing_uav/Usage.md).
 
 **Note** To automatically install the ROS dependencies needed for the custom package, please use the following lines (Remember to set the [packages](https://github.com/MikeS96/autonomous_landing_uav) in your catkin workspace)
 

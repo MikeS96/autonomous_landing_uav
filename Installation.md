@@ -2,8 +2,7 @@
 
 # Installation and environment configuration
 
-This short tutorial is intended to be used as the installation guide for the development tool-chain of the SITL 
-provided by PX4. The information provided here is based on the [official documentation](https://docs.px4.io/master/en/dev_setup/dev_env_linux_ubuntu.html) and was created with the git hash `cab477d71550558756509ad3a6ffcbebbbbf82b1`.
+This short tutorial is intended to be used as the installation guide for the development tool-chain of the SITL provided by PX4. The information provided here is based on the [official documentation](https://docs.px4.io/master/en/dev_setup/dev_env_linux_ubuntu.html) and was created with the git hash `cab477d71550558756509ad3a6ffcbebbbbf82b1`.
 
 The operative system used is [Ubuntu Linux LTS](https://wiki.ubuntu.com/LTS) 20.04 (Focal Fossa) with [ROS "Noetic"](http://wiki.ros.org/noetic/Installation/Ubuntu) and [Gazebo 11](https://dev.px4.io/v1.11/en/simulation/gazebo.html). We will go through the files needed to install each one of these as I did.
 
@@ -13,13 +12,13 @@ Install ROS Noetic (which comes by default with Gazebo 11) by following [ROS Noe
 
 Then download the PX4-Autopilot in `/home/$USER/`  with the next command.
 ```bash
-git clone https://github.com/PX4/Firmware.git --recursive
+git clone https://github.com/PX4/PX4-Autopilot.git --recursive
 ```
-Once it is downloaded it will create a folder called 'PX4-Autopilot'. To install the basic development dependencies do as follows.
+Once it is downloaded it will create a folder called `PX4-Autopilot`. To install the basic development dependencies do as follows.
 ```bash
 bash ./PX4-Autopilot/Tools/setup/ubuntu.sh
 ```
-The last lines install set up a development environment that includes [Gazebo 11](https://dev.px4.io/v1.11/en/simulation/gazebo.html) and [jMAVSim](https://docs.px4.io/master/en/simulation/jmavsim.html) simulators, and the [NuttX/Pixhawk](https://docs.px4.io/master/en/dev_setup/building_px4.html) tool-chain which are needed to use the SITL. Additionally, I encountered some errors in the past which were solved with the next commands.
+The last lines install a development environment that includes [Gazebo 11](https://dev.px4.io/v1.11/en/simulation/gazebo.html) and [jMAVSim](https://docs.px4.io/master/en/simulation/jmavsim.html) simulators, and the [NuttX/Pixhawk](https://docs.px4.io/master/en/dev_setup/building_px4.html) tool-chain which are needed to use the SITL. Additionally, I encountered some errors in the past which were solved with the next commands.
 
 ```bash
 sudo apt install libgstreamer1.0-dev 
@@ -53,7 +52,8 @@ sudo bash ./install_geographiclib_datasets.sh
 
 This project has dependencies in other ROS packages which are shown below. To install [find_object_2d](http://wiki.ros.org/find_object_2d) and [vision_opencv](http://wiki.ros.org/vision_opencv) ROS packages using the following commands.
 
-> Note: Please consider installing OpenCV from source to enable SIFT and SURF as these produced the best results 
+> Note: Please consider installing OpenCV from source (before running these commands) to enable SIFT and SURF as these 
+> produced the best results 
 > over the project.
 
 ```
