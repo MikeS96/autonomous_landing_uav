@@ -13,6 +13,8 @@ Install ROS Noetic (which comes by default with Gazebo 11) by following [ROS Noe
 Then download the PX4-Autopilot in `/home/$USER/`  with the next command.
 ```bash
 git clone https://github.com/PX4/PX4-Autopilot.git --recursive
+cd PX4-Autopilot
+git checkout cab477d71550558756509ad3a6ffcbebbbbf82b1
 ```
 Once it is downloaded it will create a folder called `PX4-Autopilot`. To install the basic development dependencies do as follows.
 ```bash
