@@ -18,18 +18,16 @@ find_package(catkin REQUIRED COMPONENTS
   message_generation
 )
 
-## http://www.briangoldfain.com/2013/02/using-qt-in-a-ros-catkin-package/
-## https://answers.ros.org/question/104666/how-to-use-qt-libraries-in-ros/
+## https://stackoverflow.com/questions/28252909/cmake-and-qt5-include-only-takes-one-argument
 
-find_package(Qt4 REQUIRED COMPONENTS QtCore QtGui)
 
-include(${QT_USE_FILE})
+find_package(Qt5 REQUIRED COMPONENTS Core Gui Widgets)
+
 ADD_DEFINITIONS(${QT_DEFINITIONS})
-
 
 find_package(Eigen3 REQUIRED) #Requiero Eigen 3
 
-find_package(OpenCV 3.4 REQUIRED) #Requiero a OpenCV
+find_package(OpenCV 4.2 REQUIRED) #Requiero a OpenCV
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
@@ -220,7 +218,7 @@ include_directories(
 
 #This scripts computes the position of the corners in Px and publish it in the ROS pipeline
 add_executable(corners_detector src/corners_detector.cpp)
-target_link_libraries(corners_detector ${catkin_LIBRARIES} ${QT_LIBRARIES}) 
+target_link_libraries(corners_detector ${catkin_LIBRARIES} Qt5::Widgets) 
 add_dependencies(corners_detector object_detector_generate_messages_cpp)
 #This scripts computes the center of the image, angle measured with the X axis and the Height and Width of the image
 add_executable(cent_calculator src/cent_calculator.cpp)

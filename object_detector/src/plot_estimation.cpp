@@ -126,10 +126,10 @@ class Drawer
             }
 
             // Draw a point in each vertices
-            cv::circle(img,vertices[0], 5, cv::Scalar(255,0,255), CV_FILLED, 8,0); // Pink
-            cv::circle(img,vertices[1], 5, cv::Scalar(0,0,255), CV_FILLED, 8,0);  // Red
-            cv::circle(img,vertices[2], 5, cv::Scalar(255,0,0), CV_FILLED, 8,0); // Blue
-            cv::circle(img,vertices[3], 5, cv::Scalar(0,255,0), CV_FILLED, 8,0); // Green
+            cv::circle(img,vertices[0], 5, cv::Scalar(255,0,255), cv::FILLED, 8,0); // Pink
+            cv::circle(img,vertices[1], 5, cv::Scalar(0,0,255), cv::FILLED, 8,0);  // Red
+            cv::circle(img,vertices[2], 5, cv::Scalar(255,0,0), cv::FILLED, 8,0); // Blue
+            cv::circle(img,vertices[3], 5, cv::Scalar(0,255,0), cv::FILLED, 8,0); // Green
 
             // Show the image
             cv::imshow(OPENCV_WINDOW, img);

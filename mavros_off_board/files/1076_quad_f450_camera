@@ -1,0 +1,17 @@
+#!/bin/sh
+#
+# @name Solo
+#
+# @type Quadrotor
+#
+
+. ${R}etc/init.d/rc.mc_defaults
+
+param set-default MC_PITCHRATE_P 0.15
+param set-default MC_ROLLRATE_P 0.15
+
+param set MAV_0_BROADCAST 1
+param set NAV_RCL_ACT 0
+param set COM_RCL_EXCEPT 4
+
+set MIXER quad_x

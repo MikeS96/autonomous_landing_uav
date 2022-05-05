@@ -1,4 +1,3 @@
-<?xml version="1.0" ?>
 <sdf version='1.5'>
   <model name='quad_f450_camera'>
     <!-- Main body frame_f450  <static>true</static> -->
@@ -459,14 +458,6 @@
             <udpPort>5600</udpPort>
         </plugin>
 
-        <plugin name="GeotaggedImagesPlugin" filename="libgazebo_geotagged_images_plugin.so">
-            <robotNamespace>quad_f450_camera</robotNamespace>
-            <interval>1</interval>
-            <width>3840</width>
-            <height>2160</height>
-            <maximum_zoom>8.0</maximum_zoom>
-        </plugin> 
-
       </sensor> 
     </link>
     <joint name='camera_joint' type='fixed'>
@@ -597,12 +588,6 @@
       </joint_control_pid>
     </plugin>
 
-    <!-- GPS Plugin-->
-    <plugin name='gps_plugin' filename='libgazebo_gps_plugin.so'>
-      <robotNamespace/>
-      <gpsNoise>true</gpsNoise>
-    </plugin>
-
     <!-- Magnetometer Plugin-->
     <plugin name='magnetometer_plugin' filename='libgazebo_magnetometer_plugin.so'>
       <robotNamespace/>
@@ -612,7 +597,18 @@
       <biasCorrelationTime>600</biasCorrelationTime>
       <magTopic>/mag</magTopic>
     </plugin>
-
+    
+    <!-- GPS Plugin (spoof) -->
+    <include>
+      <uri>model://gps</uri>
+      <pose>0.1 0 0 0 0 0</pose>
+      <name>gps0</name>
+    </include>
+    <joint name='gps0_joint' type='fixed'>
+      <child>gps0::link</child>
+      <parent>base_link</parent>
+    </joint>
+    
     <!-- Barometer Plugin-->
     <plugin name='barometer_plugin' filename='libgazebo_barometer_plugin.so'>
       <robotNamespace/>
