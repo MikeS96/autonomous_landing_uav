@@ -53,14 +53,14 @@ The repository containing the evaluation of this work can be found [here](https:
 If you use this code, please cite our [paper](https://arxiv.org/abs/2108.06616) as:
 
 ```
-@article{alsuav,
-	title        = {Monocular Visual Autonomous Landing System for Quadcopter Drones using Software in the Loop},
+@article{9656574,
+	title        = {Monocular Visual Autonomous Landing System for Quadcopter Drones Using Software in the Loop},
 	author       = {Saavedra-Ruiz, Miguel and Pinto-Vargas, Ana Maria and Romero-Cano, Victor},
-	year         = 2021,
+	year         = 2022,
 	journal      = {IEEE Aerospace and Electronic Systems Magazine},
-	volume       = {},
-	number       = {},
-	pages        = {1--1},
+	volume       = 37,
+	number       = 5,
+	pages        = {2--16},
 	doi          = {10.1109/MAES.2021.3115208}
 }
 ```
