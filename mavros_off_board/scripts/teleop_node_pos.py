@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 from __future__ import print_function
 
@@ -78,12 +78,12 @@ def vels(speed,turn):
 	return "currently:\tspeed %s\tturn %s " % (speed,turn)
 
 if __name__=="__main__":
-    	settings = termios.tcgetattr(sys.stdin)
+	settings = termios.tcgetattr(sys.stdin)
 	
 	# Publish in the /mavros/setpoint_raw/local This topic controls position and speed
 	pub = rospy.Publisher('/mavros/setpoint_raw/local', PositionTarget, queue_size = 10)
 	rospy.init_node('teleop_node_local')  # Init node
-
+	
 	#Arming Service, True for Arming and False for disarm
 	arming_cl = rospy.ServiceProxy('/mavros/cmd/arming', CommandBool)
 
@@ -134,29 +134,29 @@ if __name__=="__main__":
 
 
 			elif key == '2': # Key for arming
-			       rospy.wait_for_service('/mavros/cmd/arming')
-                               response = arming_cl(value = True)
-			       rospy.loginfo(response)
+				rospy.wait_for_service('/mavros/cmd/arming')
+				response = arming_cl(value = True)
+				rospy.loginfo(response)
+			
+			elif key == '4': # Key for disarming
+    				rospy.wait_for_service('/mavros/cmd/arming')
+    				response = arming_cl(value = False)
+    				rospy.loginfo(response)
+				
+			elif key == '3': # Key for takeoff, with a altitude of 3
+				rospy.wait_for_service('/mavros/cmd/takeoff')
+				response = takeoff_cl(altitude=3, latitude=0, longitude=0, min_pitch=0, yaw=0)
+				rospy.loginfo(response)
 
-    			elif key == '4': # Key for disarming
-   			       rospy.wait_for_service('/mavros/cmd/arming')
-                               response = arming_cl(value = False)
-			       rospy.loginfo(response)
-
-    			elif key == '3': # Key for takeoff, with a altitude of 3
-   			       rospy.wait_for_service('/mavros/cmd/takeoff')
-                               response = takeoff_cl(altitude=3, latitude=0, longitude=0, min_pitch=0, yaw=0)
-			       rospy.loginfo(response)
-
-			elif key == '5': # Key for Landing, with a altitude of 0 
-   			       rospy.wait_for_service('/mavros/cmd/land')
-                               response = landing_cl(altitude=0, latitude=0, longitude=0, min_pitch=0, yaw=0)
-			       rospy.loginfo(response)
+			elif key == '5': # Key for Landing, with a altitude of 0
+				rospy.wait_for_service('/mavros/cmd/land')
+				response = landing_cl(altitude=0, latitude=0, longitude=0, min_pitch=0, yaw=0)
+				rospy.loginfo(response)
 
 			elif key == '1': # Key for changing mode
-   			       rospy.wait_for_service('/mavros/set_mode')
-                               response = change_mode(custom_mode="OFFBOARD")
-			       rospy.loginfo(response)
+				rospy.wait_for_service('/mavros/set_mode')
+				response = change_mode(custom_mode="OFFBOARD")
+				rospy.loginfo(response)
 				
 			else:
 				vx = 0
@@ -168,9 +168,9 @@ if __name__=="__main__":
 
 			post = PositionTarget() # Use PositionTarget publisher
 			post.header.frame_id = "home"
-   		        post.header.stamp = rospy.Time.now()
-    		        post.coordinate_frame = 8 # pos.coordinate_frame = mavros_msgs::PositionTarget::FRAME_LOCAL_NED;
-    			post.type_mask  = mask
+			post.header.stamp = rospy.Time.now()
+			post.coordinate_frame = 8 # pos.coordinate_frame = mavros_msgs::PositionTarget::FRAME_LOCAL_NED;
+			post.type_mask  = mask
 			post.position.z = z*alt; # Altittude Position
 			post.velocity.x = vy*speed; post.velocity.y = vx*speed; # X and Y velocity
 			post.yaw_rate = yaw_rate*turn # Yaw rate
@@ -183,14 +183,13 @@ if __name__=="__main__":
 	finally:
 		post = PositionTarget() # Use PositionTarget publisher
 		post.header.frame_id = "home"
-   		post.header.stamp = rospy.Time.now()
-    		post.coordinate_frame = 8 # pos.coordinate_frame = mavros_msgs::PositionTarget::FRAME_LOCAL_NED;
-    		post.type_mask  = mask
+		post.header.stamp = rospy.Time.now()
+		post.coordinate_frame = 8 # pos.coordinate_frame = mavros_msgs::PositionTarget::FRAME_LOCAL_NED;
+		post.type_mask  = mask
 		post.position.z = 1; # Altittude Position
 		post.velocity.x = 0; post.velocity.y = 0; # X and Y velocity
 		post.yaw_rate = 0 # Yaw rate
 		pub.publish(post)
 		rate.sleep()
-
-    		termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
-
+		
+		termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)

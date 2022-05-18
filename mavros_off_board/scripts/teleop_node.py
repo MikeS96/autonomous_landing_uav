@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 from __future__ import print_function
 
@@ -83,7 +83,7 @@ def vels(speed,turn):
 	return "currently:\tspeed %s\tturn %s " % (speed,turn)
 
 if __name__=="__main__":
-    	settings = termios.tcgetattr(sys.stdin)
+	settings = termios.tcgetattr(sys.stdin)
 
 	# Publish in the setpont_velocity/cmd_vel This topic only control speeds.
 	pub = rospy.Publisher('/mavros/setpoint_velocity/cmd_vel', TwistStamped, queue_size = 1)
@@ -136,29 +136,29 @@ if __name__=="__main__":
 
 
 			elif key == '2': # Key for arming
-			       rospy.wait_for_service('/mavros/cmd/arming')
-                               response = arming_cl(value = True)
-			       rospy.loginfo(response)
+				rospy.wait_for_service('/mavros/cmd/arming')
+				response = arming_cl(value = True)
+				rospy.loginfo(response)
 
-    			elif key == '4': # Key for disarming
-   			       rospy.wait_for_service('/mavros/cmd/arming')
-                               response = arming_cl(value = False)
-			       rospy.loginfo(response)
+			elif key == '4': # Key for disarming
+				rospy.wait_for_service('/mavros/cmd/arming')
+				response = arming_cl(value = False)
+				rospy.loginfo(response)
 
-    			elif key == '3': # Key for takingoff, with a altitude of 5 (Modify it)
-   			       rospy.wait_for_service('/mavros/cmd/takeoff')
-                               response = takeoff_cl(altitude=5, latitude=0, longitude=0, min_pitch=0, yaw=0)
-			       rospy.loginfo(response)
+			elif key == '3': # Key for takingoff, with a altitude of 5 (Modify it)
+				rospy.wait_for_service('/mavros/cmd/takeoff')
+				response = takeoff_cl(altitude=5, latitude=0, longitude=0, min_pitch=0, yaw=0)
+				rospy.loginfo(response)
 
 			elif key == '5': # Key for Landing
-   			       rospy.wait_for_service('/mavros/cmd/land')
-                               response = landing_cl(altitude=0, latitude=0, longitude=0, min_pitch=0, yaw=0)
-			       rospy.loginfo(response)
+				rospy.wait_for_service('/mavros/cmd/land')
+				response = landing_cl(altitude=0, latitude=0, longitude=0, min_pitch=0, yaw=0)
+				rospy.loginfo(response)
 
 			elif key == '1': # Key for changing mode, change it based on your own needs.
-   			       rospy.wait_for_service('/mavros/set_mode')
-                               response = change_mode(custom_mode="OFFBOARD")
-			       rospy.loginfo(response)
+				rospy.wait_for_service('/mavros/set_mode')
+				response = change_mode(custom_mode="OFFBOARD")
+				rospy.loginfo(response)
 				
 			else:
 				x = 0
@@ -171,10 +171,14 @@ if __name__=="__main__":
 					break
 
 			twist = TwistStamped() # Changed the constructor Twist for TwistStamped
-                        twist.header.frame_id = "1" 
-   		        twist.header.stamp = rospy.Time.now()
-			twist.twist.linear.x = x*speed; twist.twist.linear.y = y*speed; twist.twist.linear.z = z*speed; #Change the object and method to use in linear and angular speed
-			twist.twist.angular.x = roll*turn; twist.twist.angular.y = pitch*turn; twist.twist.angular.z = yaw*turn #Add roll, pitch, yaw varaibles to be published
+			twist.header.frame_id = "1" 
+			twist.header.stamp = rospy.Time.now()
+			twist.twist.linear.x = x*speed
+			twist.twist.linear.y = y*speed
+			twist.twist.linear.z = z*speed #Change the object and method to use in linear and angular speed
+			twist.twist.angular.x = roll*turn
+			twist.twist.angular.y = pitch*turn
+			twist.twist.angular.z = yaw*turn #Add roll, pitch, yaw varaibles to be published
 			pub.publish(twist)
 
 	except Exception as e:
@@ -182,9 +186,13 @@ if __name__=="__main__":
 
 	finally:
 		twist = TwistStamped() # Changed the constructor Twist for TwistStamped
-		twist.twist.linear.x = 0; twist.twist.linear.y = 0; twist.twist.linear.z = 0
-		twist.twist.angular.x = 0; twist.twist.angular.y = 0; twist.twist.angular.z = 0
+		twist.twist.linear.x = 0
+		twist.twist.linear.y = 0
+		twist.twist.linear.z = 0
+		twist.twist.angular.x = 0
+		twist.twist.angular.y = 0
+		twist.twist.angular.z = 0
 		pub.publish(twist)
-
-    		termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
+		
+		termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
 
