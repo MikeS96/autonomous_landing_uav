@@ -27,7 +27,7 @@ ADD_DEFINITIONS(${QT_DEFINITIONS})
 
 find_package(Eigen3 REQUIRED) #Requiero Eigen 3
 
-find_package(OpenCV 4.2 REQUIRED) #Requiero a OpenCV
+find_package(OpenCV 3.2 REQUIRED) #Requiero a OpenCV
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
